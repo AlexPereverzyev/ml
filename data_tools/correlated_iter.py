@@ -17,6 +17,12 @@ class CorrelatedIterator(object):
         if not self.expression:
             raise Exception('Invalid data expression')
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
     def __iter__(self):
         self.iter_state = OrderedDict(
             (f, self.SourceState(s, iter(CsvIterator(f, s.columns))))
@@ -40,6 +46,11 @@ class CorrelatedIterator(object):
                 except StopIteration:
                     self.close()
                     raise
+                for i, v in enumerate(d):
+                    try:
+                        d[i] = float(v)
+                    except Exception:
+                        continue
                 ci = (ss.settings.columns.index(ss.settings.correlation)
                       if ss.settings.correlation else None)
                 cv = (d[ci]

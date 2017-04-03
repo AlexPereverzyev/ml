@@ -2,16 +2,17 @@
 from data_tools import CorrelatedIterator
 from predictor import LinearRegression
 
-_training_set1 = """test_data/basic.csv|N^,Y,X|:6"""
-_validation_set1 = """test_data/basic.csv|N^,Y,X|7:"""
+_training_set1 = """test_data/basic.csv|@N,X,Y|:6"""
+_validation_set1 = """test_data/basic.csv|@N,X,Y|7:"""
 
-_training_set2 = """test_data/Average Response Time.csv|date^,value|:7;
-        test_data/Calls Per Minute.csv|date^,value;
-        test_data/Errors Per Minute.csv|date^,value;"""
-_validation_set2 = """test_data/Average Response Time.csv|date^,value|:8;
-        test_data/Calls Per Minute.csv|date^,value;
-        test_data/Errors Per Minute.csv|date^,value;"""
-
+_training_set2 = """
+        test_data/Calls Per Minute.csv|@date,value|:7;
+        test_data/Errors Per Minute.csv|@date,value;
+        test_data/Average Response Time.csv|@date,value;"""
+_validation_set2 = """
+        test_data/Calls Per Minute.csv|@date,value|8:;
+        test_data/Errors Per Minute.csv|@date,value;
+        test_data/Average Response Time.csv|@date,value;"""
 
 if __name__ == "__main__":
     print('----------- example 1 ------------')

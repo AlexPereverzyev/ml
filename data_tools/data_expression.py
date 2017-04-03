@@ -3,13 +3,16 @@ import re
 import os
 import sys
 from collections import namedtuple
+from enum import Enum
 
 
 class DataExpression(object):
     """Data expression parser with iterator interface. Expression syntax:
     expression := source [ | column [ | range ] ];
-        source := path [ file_name.ext | *.ext ]
-        column := col1 [ , col2 , ... ]
+        source := path [ file.ext | *.ext ]
+        column := col [ , col , ... ]
+           col := name | @name | name^power | const
+         const := one | zero
          range := bound : bound | bound : | : bound
          bound := 1 .. N
 
@@ -17,18 +20,21 @@ class DataExpression(object):
     ( file_name, (columns list, correlation column, left bound, right bound) )
     """
 
-    separator = ','
     source_separator = ';'
-    columns_separator = '|'
+    syntax_separator = '|'
+    separator = ','
+    join_mark = '@'
+    power_mark = '^'
     range_separator = ':'
-    column_mark = '^'
+
+    terminals = [separator, source_separator, syntax_separator,
+                 range_separator, join_mark, power_mark]
+
+    const_columns = {'zero': 0, 'one': 1}
 
     single_file_pattern = re.compile('.+?([^/*.]+\.[\w]+)$')
     masked_file_pattern = re.compile('(.+)/\*(\.[\w]+)$')
     directory_pattern = re.compile('/?[^/*.]+/?$')
-
-    Settings = namedtuple('Settings',
-                          ['columns', 'correlation', 'left', 'right'])
 
     def __init__(self, expression):
         if not expression:
@@ -43,68 +49,116 @@ class DataExpression(object):
         return next(self.sources)
 
     def parse_sources(self):
-        for source_expr in (src for src in
-                            (s.strip() for s in
-                             self.expression.split(self.source_separator))
-                            if src):
-            source, columns_expr, range_expr = self._split(source_expr)
-            columns, marked = self._parse_columns(columns_expr)
-            left, right = self._parse_range(range_expr)
-            is_single = self.single_file_pattern.match(source)
-            is_masked = self.masked_file_pattern.match(source)
-            is_folder = self.directory_pattern.match(source)
-            if is_single:
-                yield (source,
-                       self.Settings(columns, marked, left, right))
-            elif is_masked:
-                dir = is_masked.group(1)
-                ext = is_masked.group(2).lower()
-                for f in os.listdir(dir):
-                    if f.lower().endswith(ext):
-                        file_name = os.path.join(dir, f)
-                        yield (file_name,
-                               self.Settings(columns, marked, left, right))
-            elif is_folder:
-                for f in os.listdir(source):
-                    file_name = os.path.join(source, f)
-                    yield (file_name,
-                           self.Settings(columns, marked, left, right))
+        tokens = self._tokenize()
+        if not tokens:
+            raise Exception('Missing data expression')
+        source, i = None, -1
+        state = ParserState.Source
+        while True:
+            i, token = self._next_token(i, tokens)
+            if not token:
+                if source:
+                    state = ParserState.Done
+                else:
+                    break
+            if state == ParserState.Source:
+                source = [s for s in self._parse_source(token)]
+                columns, join = [], None
+                left, right = None, None
+                state = ParserState.Columns
+            elif state == ParserState.Columns:
+                if token == self.source_separator:
+                    i -= 1
+                    state = ParserState.Done
+                elif token == self.syntax_separator:
+                    if columns:
+                        state = ParserState.Range
+                elif token == self.separator:
+                    pass
+                elif token == self.join_mark:
+                    i += 1
+                    join = tokens[i]
+                    columns.append(ColumnMeta(join))
+                elif token == self.power_mark:
+                    i += 1
+                    token = tokens[i]
+                    power = int(token)
+                    columns[-1].func = lambda x: x ** power
+                else:
+                    columns.append(ColumnMeta(token))
+                    if token in self.const_columns.keys():
+                        value = self.const_columns[token]
+                        columns[-1].func = lambda x: value
+            elif state == ParserState.Range:
+                if token == self.source_separator:
+                    i -= 1
+                    state = ParserState.Done
+                elif token == self.syntax_separator:
+                    pass
+                elif token == self.range_separator:
+                    left = left or 1
+                else:
+                    if not left:
+                        left = int(token)
+                    else:
+                        right = int(token)
+            elif state == ParserState.Done:
+                for s in source:
+                    yield (s, SourceMeta(
+                        columns, join, left or 1, right or sys.maxsize))
+                source = None
+                state = ParserState.Source
 
-    def _split(self, source_expr):
-        split = source_expr.split(self.columns_separator)
-        if not split or len(split) > 3:
-            raise Exception('Invalid source expression')
-        source = split[0].strip()
-        if not source:
-            raise Exception('Invalid source expression')
-        columns_expr = split[1] if len(split) > 1 else None
-        range_expr = split[2] if len(split) > 2 else None
-        if (columns_expr and self.range_separator in columns_expr and
-           (not range_expr or self.range_separator not in range_expr)):
-            columns_expr, range_expr = range_expr, columns_expr
-        return source, columns_expr, range_expr
+    def _tokenize(self):
+        t = ''
+        tokens = []
+        for c in self.expression:
+            if c in self.terminals:
+                if t:
+                    tokens.append(t.strip().lower())
+                    t = ''
+                tokens.append(c)
+            else:
+                t += c
+        if t:
+            tokens.append(t)
+        return tokens
 
-    def _parse_columns(self, columns_expr):
-        if not columns_expr:
-            return None, None
-        columns = [c.strip() for c in columns_expr.split(self.separator) if c]
-        marked = next((c for c in columns if c.endswith(self.column_mark) and
-                       c.replace(self.column_mark, '')), None)
-        columns = [col for col in
-                   (c.replace(self.column_mark, '') for c in columns) if col]
-        marked = marked.replace(self.column_mark, '') if marked else None
-        return columns, marked
+    def _parse_source(self, source):
+        is_single = self.single_file_pattern.match(source)
+        is_masked = self.masked_file_pattern.match(source)
+        is_folder = self.directory_pattern.match(source)
+        if is_single:
+            yield source
+        elif is_masked:
+            dir = is_masked.group(1)
+            ext = is_masked.group(2)
+            for f in os.listdir(dir):
+                if f.lower().endswith(ext):
+                    file_name = os.path.join(dir, f).lower()
+                    yield file_name
+        elif is_folder:
+            for f in os.listdir(source):
+                file_name = os.path.join(source, f).lower()
+                yield file_name
 
-    def _parse_range(self, range_expr):
-        if not range_expr:
-            return 1, sys.maxsize
-        if self.range_separator not in range_expr:
-            raise Exception('Invalid range expression')
-        try:
-            left, right = range_expr.split(self.range_separator)
-            left, right = left.strip(), right.strip()
-            left, right = (int(left) if left else 1,
-                           int(right) if right else sys.maxsize)
-        except Exception as e:
-            raise Exception('Invalid range expression', e)
-        return left, right
+    def _next_token(self, i, tokens):
+        if i < len(tokens) - 1:
+            i += 1
+            token = tokens[i]
+            return i, token
+        return i, None
+
+
+SourceMeta = namedtuple('SourceMeta', ['columns', 'join', 'left', 'right'])
+
+
+class ColumnMeta(str):
+    func = None
+
+
+class ParserState(Enum):
+    Source = 0
+    Columns = 1
+    Range = 2
+    Done = 3

@@ -9,9 +9,6 @@ class CorrelatedIterator(object):
     and outputs one data sample per time. The samples can be joined by
     specified column"""
 
-    SourceState = namedtuple('SourceState', ['settings', 'iterator'])
-    CorrelatedState = namedtuple('CorrelatedState', ['key', 'values'])
-
     def __init__(self, expression):
         self.expression = expression
         if not self.expression:
@@ -25,12 +22,12 @@ class CorrelatedIterator(object):
 
     def __iter__(self):
         self.iter_state = OrderedDict(
-            (f, self.SourceState(s, iter(CsvIterator(f, s.columns))))
+            (f, SourceState(s, iter(CsvIterator(f, s.columns))))
             for f, s in DataExpression(self.expression))
         if not self.iter_state:
             raise Exception('Invalid data expression')
         for f, ss in self.iter_state.items():
-            while ss.iterator.pos < ss.settings.left:
+            while ss.iterator.pos < ss.meta.left:
                 next(ss.iterator)
         return self
 
@@ -38,7 +35,7 @@ class CorrelatedIterator(object):
         data = []
         for f, ss in self.iter_state.items():
             while True:
-                if ss.iterator.pos > ss.settings.right:
+                if ss.iterator.pos > ss.meta.right:
                     self.close()
                     raise StopIteration('Exceeded right bound')
                 try:
@@ -51,18 +48,16 @@ class CorrelatedIterator(object):
                         d[i] = float(v)
                     except Exception:
                         continue
-                ci = (ss.settings.columns.index(ss.settings.correlation)
-                      if ss.settings.correlation else None)
+                ci = (ss.meta.columns.index(ss.meta.join)
+                      if ss.meta.join else None)
                 cv = (d[ci]
-                      if ss.settings.correlation else None)
-                cs = self.CorrelatedState(cv, d)
+                      if ss.meta.join else None)
+                cs = CorrelatedState(cv, d)
                 if not cs.key:
                     break
+                del cs.values[ci]
                 prev_cs = next((c for c in reversed(data) if c.key), None)
-                if not prev_cs:
-                    break
-                if cs.key == prev_cs.key:
-                    del cs.values[ci]
+                if not prev_cs or cs.key == prev_cs.key:
                     break
             data.append(cs)
         return reduce(lambda d1, d2: d1 + d2, (s.values for s in data))
@@ -72,3 +67,8 @@ class CorrelatedIterator(object):
             for iterator in (s.iterator for s in self.iter_state.values()):
                 iterator.close()
             self.iter_state.clear()
+
+
+SourceState = namedtuple('SourceState', ['meta', 'iterator'])
+
+CorrelatedState = namedtuple('CorrelatedState', ['key', 'values'])

@@ -2,6 +2,6 @@
 TODO
 ----
 
- - add error calculation
- - find better way to parse data samples (key/y)
+ - add calculated columns (power and const)
+ - add training error
  - add stohastic learning for LMS

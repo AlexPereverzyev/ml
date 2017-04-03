@@ -36,19 +36,14 @@ class LinearRegression(object):
         return result
 
     def calc_cost(self, data_feed):
-        """Calculates cost function for given training set and parameters.
-        The function assumes that 1st element of data sample is a key and
-        second - a true value and the rest - inputs"""
+        """Calculates cost function for given training set and parameters"""
         if not self.theta:
             raise Exception('Linear regression should be trained first')
-        delta = map(lambda d: (self.predict(d[2:]) - d[1]) ** 2, data_feed)
+        delta = map(lambda d: (self.predict(d) - d[-1]) ** 2, data_feed)
         cost = reduce(lambda x, y: x + y, delta) / 2
         return cost
 
-    def calc_square_error(self, data_feed):
-        pass
-
-    def calc_error(self, data_feed):
+    def calc_training_error(self, data_feed):
         pass
 
     def calc_learning_rate(self, cur, rlen):
@@ -57,19 +52,17 @@ class LinearRegression(object):
         return cur * (1. - rlen / self.iterations)
 
     def batch_train(self, data_feed):
-        """Trains using Least Mean Squares batch training algorithm.
-        The function assumes that 1st element of data sample is a key,
-        second - a true value and the rest - inputs"""
+        """Trains using Least Mean Squares batch training algorithm"""
         learning_rate = self.learning_rate
         for k in range(self.iterations):
             theta = self.theta[:]
             for i, t in enumerate(self.theta):
                 sample_gradients = []
                 for sample in data_feed:
-                    inputs = [1] + sample[2:]
+                    inputs = [1] + sample
                     x = inputs[i]
-                    y = sample[1]
-                    h = self.predict(sample[2:])
+                    y = sample[-1]
+                    h = self.predict(sample)
                     g = (y - h) * x
                     sample_gradients.append(g)
                 gradient = reduce(lambda x, y: x + y, sample_gradients)

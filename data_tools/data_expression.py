@@ -82,7 +82,7 @@ class DataExpression(object):
                 elif token == self.power_mark:
                     i += 1
                     token = tokens[i]
-                    power = int(token)
+                    power = float(token)
                     columns[-1].func = lambda x: x ** power
                 else:
                     columns.append(ColumnMeta(token))

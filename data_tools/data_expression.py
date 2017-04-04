@@ -120,6 +120,7 @@ class DataExpression(object):
                 tokens.append(c)
             else:
                 t += c
+        t = t.strip().lower()
         if t:
             tokens.append(t)
         return tokens

@@ -5,7 +5,7 @@ class LinearRegression(object):
     """Basic value predictor based on ordinary linear regression"""
 
     def __init__(self, dimensions=1, iterations=100, learning_rate=0.00001,
-                 init_theta=.0):
+                 init_theta=.0, precision=10):
         if (not dimensions or dimensions < 1 or
            not iterations or iterations < 1 or
            not learning_rate or learning_rate < 0 or
@@ -14,6 +14,7 @@ class LinearRegression(object):
         self.theta = [init_theta for _ in range(dimensions + 1)]
         self.iterations = iterations
         self.learning_rate = learning_rate
+        self.precision = precision
 
     def __str__(self):
         result = 'Y = '
@@ -43,7 +44,14 @@ class LinearRegression(object):
         return cost
 
     def calc_training_error(self, data_feed):
-        pass
+        """Calculates training error for given training set and parameters"""
+        if not self.theta:
+            raise Exception('Linear regression should be trained first')
+        missed_count = list(map(lambda d:
+                            int(abs(self.predict(d) - d[-1]) > self.precision),
+                            data_feed))
+        error = reduce(lambda x, y: x + y, missed_count) / len(missed_count)
+        return error * 100
 
     def calc_learning_rate(self, cur, rlen):
         """Calculates new value of learning rate based on the current one

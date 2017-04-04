@@ -10,6 +10,7 @@ class CorrelatedIterator(object):
     specified column"""
 
     def __init__(self, expression):
+        self.iter_state = None
         self.expression = expression
         if not self.expression:
             raise Exception('Invalid data expression')

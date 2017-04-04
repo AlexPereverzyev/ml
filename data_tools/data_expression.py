@@ -87,8 +87,7 @@ class DataExpression(object):
                 else:
                     columns.append(ColumnMeta(token))
                     if token in self.const_columns.keys():
-                        value = self.const_columns[token]
-                        columns[-1].func = lambda x: value
+                        columns[-1].const = self.const_columns[token]
             elif state == ParserState.Range:
                 if token == self.source_separator:
                     i -= 1
@@ -114,9 +113,10 @@ class DataExpression(object):
         tokens = []
         for c in self.expression:
             if c in self.terminals:
+                t = t.strip().lower()
                 if t:
-                    tokens.append(t.strip().lower())
-                    t = ''
+                    tokens.append(t)
+                t = ''
                 tokens.append(c)
             else:
                 t += c
@@ -155,6 +155,20 @@ SourceMeta = namedtuple('SourceMeta', ['columns', 'join', 'left', 'right'])
 
 class ColumnMeta(str):
     func = None
+    const = None
+    index = None
+
+    @property
+    def is_func(self):
+        return self.func is not None
+
+    @property
+    def is_const(self):
+        return self.const is not None
+
+    @property
+    def is_indexed(self):
+        return self.index is not None
 
 
 class ParserState(Enum):

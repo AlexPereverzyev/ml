@@ -7,27 +7,24 @@ class CsvIterator(object):
     separator = ','
 
     def __init__(self, file_name, columns):
-        self.file_name = file_name.strip()
+        self.file_name = file_name
         if not self.file_name:
             raise Exception('Invalid file name')
-        self.columns = ([col for col in
-                        (c.strip().lower() for c in columns) if col]
-                        if columns else [])
+        self.columns = columns
         self.pos = 0
 
     def __iter__(self):
         self.data_file = open(self.file_name, 'r', encoding='utf-8')
-        columns = [c.strip().lower() for c in
-                   self.data_file.readline().split(self.separator)]
+        self.file_columns = [c.strip().lower() for c in
+                             self.data_file.readline().split(self.separator)]
         self.pos = 1
-        if not columns:
+        if not self.file_columns:
             raise StopIteration('CSV header not found')
-        self.indexes = [i for i in
-                        (columns.index(c) for c in
-                         self.columns if c in columns)]
-        if not self.indexes and not self.columns:
-            self.indexes = range(len(columns))
-        if not self.indexes:
+        for c in self.columns:
+            if c in self.file_columns:
+                c.index = self.file_columns.index(c)
+        if (self.columns and
+           not next((c for c in self.columns if c.is_indexed), None)):
             raise StopIteration('Specified columns not found')
         return self
 
@@ -38,7 +35,8 @@ class CsvIterator(object):
             self.data_file.close()
             raise StopIteration('EOF reached')
         data = line.split(self.separator)
-        select = [data[i].strip() for i in self.indexes]
+        select = [data[c.index].strip() for c in self.columns if c.is_indexed]
+        select = select or [d.strip() for d in data]
         return select
 
     def close(self):

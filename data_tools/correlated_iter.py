@@ -1,6 +1,6 @@
 from functools import reduce
 from collections import OrderedDict, namedtuple
-from data_tools.csv_iter import CsvIterator
+from data_tools.functional_iter import FunctionalIterator
 from data_tools.data_expression import DataExpression
 
 
@@ -22,7 +22,7 @@ class CorrelatedIterator(object):
 
     def __iter__(self):
         self.iter_state = OrderedDict(
-            (f, SourceState(s, iter(CsvIterator(f, s.columns))))
+            (f, SourceState(s, iter(FunctionalIterator(f, s.columns))))
             for f, s in DataExpression(self.expression))
         if not self.iter_state:
             raise Exception('Invalid data expression')
@@ -43,11 +43,6 @@ class CorrelatedIterator(object):
                 except StopIteration:
                     self.close()
                     raise
-                for i, v in enumerate(d):
-                    try:
-                        d[i] = float(v)
-                    except Exception:
-                        continue
                 ci = (ss.meta.columns.index(ss.meta.join)
                       if ss.meta.join else None)
                 cv = (d[ci]

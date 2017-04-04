@@ -30,9 +30,8 @@ class LinearRegression(object):
         and provided sample"""
         if not self.theta:
             raise Exception('Linear regression should be trained first')
-        inputs = [1] + sample
         result = reduce(lambda p1, p2: p1 + p2,
-                        (t * inputs[i] for i, t in enumerate(self.theta)))
+                        (t * sample[i] for i, t in enumerate(self.theta)))
         return result
 
     def calc_cost(self, data_feed):
@@ -59,8 +58,7 @@ class LinearRegression(object):
             for i, t in enumerate(self.theta):
                 sample_gradients = []
                 for sample in data_feed:
-                    inputs = [1] + sample
-                    x = inputs[i]
+                    x = sample[i]
                     y = sample[-1]
                     h = self.predict(sample)
                     g = (y - h) * x

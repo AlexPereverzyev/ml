@@ -2,6 +2,5 @@
 TODO
 ----
 
- - add calculated columns (power and const)
  - add training error
  - add stohastic learning for LMS

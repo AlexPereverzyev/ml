@@ -78,5 +78,11 @@ class LinearRegression(object):
 
     def stohastic_train(self, sample):
         """Trains using Least Mean Squares stohastic training algorithm"""
-        # todo
-        pass
+        theta = self.theta[:]
+        for i, t in enumerate(self.theta):
+            x = sample[i]
+            y = sample[-1]
+            h = self.predict(sample)
+            gradient = (y - h) * x
+            theta[i] = t + self.learning_rate * gradient
+        self.theta = theta

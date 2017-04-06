@@ -4,14 +4,13 @@ from functools import reduce
 class LinearRegression(object):
     """Basic value predictor based on ordinary linear regression"""
 
-    def __init__(self, dimensions=1, iterations=100, learning_rate=0.00001,
-                 init_theta=.0, precision=10):
+    def __init__(self, dimensions=1, iterations=100,
+                 learning_rate=0.00001, precision=10):
         if (not dimensions or dimensions < 1 or
            not iterations or iterations < 1 or
-           not learning_rate or learning_rate < 0 or
-           init_theta is None):
+           not learning_rate or learning_rate < 0):
             raise Exception('Invalid input arguments')
-        self.theta = [init_theta for _ in range(dimensions + 1)]
+        self.theta = [0 for _ in range(dimensions + 1)]
         self.iterations = iterations
         self.learning_rate = learning_rate
         self.precision = precision

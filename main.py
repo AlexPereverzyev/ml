@@ -1,29 +1,14 @@
-
-from data_tools import CorrelatedIterator
 from predictor import LinearRegression
+from classifier import LogisticRegression
 from training_sets import *
 
+
 if __name__ == "__main__":
-    details_count = 10
+    test_regression('Linear Regression', 1, 100, 0.00001, 1.5,
+                    TrainingSet1, ValidationSet1, 0, LinearRegression)
 
-    print('-' * 20, ' Example 1', '-' * 20)
-    lr = LinearRegression(1, 100, 0.00001, precision=1)
-    with CorrelatedIterator(Training_set1) as feed:
-        lr.batch_train(feed)
-        print('Et = {0} %'.format(lr.calc_training_error(feed)))
-    with CorrelatedIterator(Validation_set1) as feed:
-        print('E  = {0} %'.format(lr.calc_training_error(feed)))
-        print('-' * 20, 'Details: {0}'.format(lr))
-        for d in (d for i, d in enumerate(feed) if i < details_count):
-            print('Ye = {0}, Yr = {1}'.format(lr.predict(d), d[-1]))
+    test_regression('Logistic Regression', 2, 1000, 0.0005, .1,
+                    TrainingSet2, ValidationSet2, 0, LogisticRegression)
 
-    print('-' * 20, ' Example 2 ', '-' * 20)
-    lr = LinearRegression(11, 10, 0.000000001, precision=50)
-    with CorrelatedIterator(Training_set2) as feed:
-        lr.batch_train(feed)
-        print('Et = {0} %'.format(lr.calc_training_error(feed)))
-    with CorrelatedIterator(Validation_set2) as feed:
-        print('E  = {0} %'.format(lr.calc_training_error(feed)))
-        print('-' * 20, 'Details: {0}'.format(lr))
-        for d in (d for i, d in enumerate(feed) if i < details_count):
-            print('Ye = {0}, Yr = {1}'.format(lr.predict(d), d[-1]))
+    # test_regression('Response Time Logistics', 11, 1000, 0.0000001, .1,
+    #                 TrainingSet3, ValidationSet3, 100, LogisticRegression)

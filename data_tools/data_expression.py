@@ -11,10 +11,10 @@ class DataExpression(object):
     expression := source [ | column [ | range ] ];
         source := path [ file.ext | *.ext ]
         column := col [ , col , ... ]
-           col := name | @name | name^power | const
+           col := name | @name | name^power | name>num | const
          const := one | zero
-         range := bound : bound | bound : | : bound
-         bound := 1 .. N
+         range := num : num | num : | : num
+           num := 1 .. N
 
     Returns tuples with the following structure:
     ( file_name, (columns list, correlation column, left bound, right bound) )
@@ -25,12 +25,11 @@ class DataExpression(object):
     separator = ','
     join_mark = '@'
     power_mark = '^'
+    gt_mark = '>'
     range_separator = ':'
-
-    terminals = [separator, source_separator, syntax_separator,
-                 range_separator, join_mark, power_mark]
-
     const_columns = {'zero': 0, 'one': 1}
+    terminals = [separator, source_separator, syntax_separator,
+                 range_separator, join_mark, power_mark, gt_mark]
 
     single_file_pattern = re.compile('.+?([^/*.]+\.[\w]+)$')
     masked_file_pattern = re.compile('(.+)/\*(\.[\w]+)$')
@@ -79,11 +78,12 @@ class DataExpression(object):
                     i += 1
                     join = tokens[i]
                     columns.append(ColumnMeta(join))
-                elif token == self.power_mark:
+                elif token in [self.power_mark, self.gt_mark]:
+                    op = token
                     i += 1
                     token = tokens[i]
-                    power = float(token)
-                    columns[-1].func = lambda x: x ** power
+                    a = float(token)
+                    columns[-1].func = self._func_factory(op, a)
                 else:
                     columns.append(ColumnMeta(token))
                     if token in self.const_columns.keys():
@@ -149,6 +149,14 @@ class DataExpression(object):
             token = tokens[i]
             return i, token
         return i, None
+
+    def _func_factory(self, op, arg):
+        if op == self.power_mark:
+            return lambda x: x ** arg
+        elif op == self.gt_mark:
+            return lambda x: int(x > arg)
+        else:
+            raise Exception('Invalid operation')
 
 
 SourceMeta = namedtuple('SourceMeta', ['columns', 'join', 'left', 'right'])

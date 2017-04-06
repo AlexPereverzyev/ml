@@ -1,2 +1,2 @@
 
-from data_tools.correlated_iter import CorrelatedIterator
+from data_tools.data_iter import DataIterator

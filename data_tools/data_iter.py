@@ -4,7 +4,7 @@ from data_tools.functional_iter import FunctionalIterator
 from data_tools.data_expression import DataExpression
 
 
-class CorrelatedIterator(object):
+class DataIterator(object):
     """Data feeder which reads data from files specified by expression
     and outputs one data sample per time. The samples can be joined by
     specified column"""

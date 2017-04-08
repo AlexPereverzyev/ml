@@ -57,20 +57,20 @@ class LinearRegression(object):
         and number of iterations remaining"""
         return cur * (1. - rlen / self.iterations)
 
-    def batch_train(self, data_feed):
+    def batch_train(self, data):
         """Trains using Least Mean Squares batch training algorithm"""
         learning_rate = self.learning_rate
         for k in range(self.iterations):
             theta = self.theta[:]
             for i, t in enumerate(self.theta):
-                sample_gradients = []
-                for sample in data_feed:
+                partials = []
+                for sample in data:
+                    h = self.predict(sample)
                     x = sample[i]
                     y = sample[-1]
-                    h = self.predict(sample)
                     g = (y - h) * x
-                    sample_gradients.append(g)
-                gradient = reduce(lambda x, y: x + y, sample_gradients)
+                    partials.append(g)
+                gradient = reduce(lambda x, y: x + y, partials)
                 theta[i] = t + learning_rate * gradient
             self.theta = theta
             learning_rate = self.calc_learning_rate(learning_rate, k + 1)

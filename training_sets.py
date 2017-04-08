@@ -44,6 +44,12 @@ ValidationSet3 = """
         data/Average Response Time.csv|@date,value>400;
     """
 
+TrainingSet4 = """
+        test_data/logistic2.csv|one,X1,X2,Y|:50"""
+
+ValidationSet4 = """
+        test_data/logistic2.csv|one,X1,X2,Y|51:"""
+
 
 def test_regression(name, features, iterations, learning, precision,
                     training_set, validation_set, details_count,

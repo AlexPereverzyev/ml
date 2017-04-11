@@ -16,14 +16,8 @@ class LinearRegression(object):
         self.precision = precision
 
     def __str__(self):
-        result = 'Y = '
-        if not self.theta:
-            result += '?'
-            return result
-        for i, t in enumerate(self.theta):
-            sign = '+' if (i != 0 and t >= 0) else ''
-            result += '{0}{1}*X{2} '.format(sign, t, i)
-        return result
+        return '  '.join(
+            ['[['] + ['{0:.8f}'.format(t) for t in self.theta] + [']]'])
 
     def predict(self, sample):
         """Evaluates target function using pre-trained parameters
@@ -63,14 +57,14 @@ class LinearRegression(object):
         for k in range(self.iterations):
             theta = self.theta[:]
             for i, t in enumerate(self.theta):
-                partials = []
+                gradients = []
                 for sample in data:
                     h = self.predict(sample)
                     x = sample[i]
                     y = sample[-1]
                     g = (y - h) * x
-                    partials.append(g)
-                gradient = reduce(lambda x, y: x + y, partials)
+                    gradients.append(g)
+                gradient = reduce(lambda x, y: x + y, gradients)
                 theta[i] = t + learning_rate * gradient
             self.theta = theta
             learning_rate = self.calc_learning_rate(learning_rate, k + 1)

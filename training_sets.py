@@ -68,20 +68,20 @@ def test_regression(name, features, iterations, learning, precision,
 
 
 def test_regression_skl(name, training_set, validation_set, details_count,
-                        algorithm):
+                        regression):
     print('-' * 20, name, '-' * 20)
     with DataIterator(training_set) as data_generator:
         feed = list(data_generator)
-    X = [f[:-1] for f in feed]
+    X = [f[1:-1] for f in feed]
     Y = [f[-1] for f in feed]
-    regression = algorithm()
     regression.fit(X, Y)
-    print('h = ', str(regression.coef_).replace('\n', ''))
+    print('h = ', regression.intercept_,
+          str(regression.coef_).replace('\n', ''))
     error = (1. - regression.score(X, Y)) * 100
     print('Et = {0:.2f} %'.format(error))
     with DataIterator(validation_set) as data_generator:
         feed = list(data_generator)
-    X = [f[:-1] for f in feed]
+    X = [f[1:-1] for f in feed]
     Y = [f[-1] for f in feed]
     error = (1. - regression.score(X, Y)) * 100
     print('E  = {0:.2f} %'.format(error))

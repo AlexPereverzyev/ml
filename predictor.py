@@ -16,8 +16,10 @@ class LinearRegression(object):
         self.precision = precision
 
     def __str__(self):
-        return '  '.join(
-            ['[['] + ['{0:.8f}'.format(t) for t in self.theta] + [']]'])
+        result = '[ {0:.8f} ] [[ '.format(self.theta[0])
+        result += '  '.join(['{0:.8f}'.format(t) for t in self.theta[1:]])
+        result += ' ]]'
+        return result
 
     def predict(self, sample):
         """Evaluates target function using pre-trained parameters

@@ -1,5 +1,5 @@
 import math
-from predictor import LinearRegression
+from linear.predictor import LinearRegression
 
 
 class LogisticRegression(LinearRegression):

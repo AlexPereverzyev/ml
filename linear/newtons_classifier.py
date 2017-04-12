@@ -1,12 +1,12 @@
 from functools import reduce
-from classifier import LogisticRegression
+from linear.classifier import LogisticRegression
 
 
 class NewtonsClassifier(LogisticRegression):
     """Basic classifier based on ordinary linear regression and sigmoid
     function and Newton - Raphson training algorithm"""
 
-    def batch_train(self, data):
+    def train(self, data):
         """Trains using Newton - Raphson batch training algorithm"""
         for k in range(self.iterations):
             theta = self.theta[:]

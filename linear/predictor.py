@@ -21,30 +21,21 @@ class LinearRegression(object):
         result += ' ]]'
         return result
 
-    def predict(self, sample):
-        """Evaluates target function using pre-trained parameters
-        and provided sample"""
-        if not self.theta:
-            raise Exception('Linear regression should be trained first')
-        result = reduce(lambda p1, p2: p1 + p2,
-                        (t * sample[i] for i, t in enumerate(self.theta)))
-        return result
-
-    def calc_cost(self, data_feed):
+    def calc_cost(self, data):
         """Calculates cost function for given training set and parameters"""
         if not self.theta:
-            raise Exception('Linear regression should be trained first')
-        delta = map(lambda d: (self.predict(d) - d[-1]) ** 2, data_feed)
+            raise Exception('Regression should be trained first')
+        delta = map(lambda d: (self.predict(d) - d[-1]) ** 2, data)
         cost = reduce(lambda x, y: x + y, delta) / 2
         return cost
 
-    def calc_training_error(self, data_feed):
+    def calc_training_error(self, data):
         """Calculates training error for given training set and parameters"""
         if not self.theta:
-            raise Exception('Linear regression should be trained first')
+            raise Exception('Regression should be trained first')
         missed_count = list(map(lambda d:
                             int(abs(self.predict(d) - d[-1]) > self.precision),
-                            data_feed))
+                            data))
         error = reduce(lambda x, y: x + y, missed_count) / len(missed_count)
         return error * 100
 
@@ -53,7 +44,7 @@ class LinearRegression(object):
         and number of iterations remaining"""
         return cur * (1. - rlen / self.iterations)
 
-    def batch_train(self, data):
+    def train(self, data):
         """Trains using Least Mean Squares batch training algorithm"""
         learning_rate = self.learning_rate
         for k in range(self.iterations):
@@ -81,3 +72,12 @@ class LinearRegression(object):
             gradient = (y - h) * x
             theta[i] = t + self.learning_rate * gradient
         self.theta = theta
+
+    def predict(self, sample):
+        """Evaluates target function using pre-trained parameters
+        and provided sample"""
+        if not self.theta:
+            raise Exception('Regression should be trained first')
+        result = reduce(lambda p1, p2: p1 + p2,
+                        (t * sample[i] for i, t in enumerate(self.theta)))
+        return result

@@ -2,7 +2,6 @@
 TODO
 ----
 
- - make predict accept arrays; use single function to calc my and SKL score
- - refactor test tools
+ - refactor regression tester, add data caching
  - add LDA
  - add naive Bayes

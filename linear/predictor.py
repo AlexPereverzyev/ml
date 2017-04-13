@@ -4,8 +4,7 @@ from functools import reduce
 class LinearRegression(object):
     """Basic value predictor based on ordinary linear regression"""
 
-    def __init__(self, dimensions=1, iterations=100,
-                 learning_rate=0.00001, precision=10):
+    def __init__(self, dimensions=1, iterations=100, learning_rate=0.00001):
         if (not dimensions or dimensions < 1 or
            not iterations or iterations < 1 or
            not learning_rate or learning_rate < 0):
@@ -13,31 +12,12 @@ class LinearRegression(object):
         self.theta = [0 for _ in range(dimensions + 1)]
         self.iterations = iterations
         self.learning_rate = learning_rate
-        self.precision = precision
 
     def __str__(self):
         result = '[ {0:.8f} ] [[ '.format(self.theta[0])
         result += '  '.join(['{0:.8f}'.format(t) for t in self.theta[1:]])
         result += ' ]]'
         return result
-
-    def calc_cost(self, data):
-        """Calculates cost function for given training set and parameters"""
-        if not self.theta:
-            raise Exception('Regression should be trained first')
-        delta = map(lambda d: (self.predict(d) - d[-1]) ** 2, data)
-        cost = reduce(lambda x, y: x + y, delta) / 2
-        return cost
-
-    def calc_training_error(self, data):
-        """Calculates training error for given training set and parameters"""
-        if not self.theta:
-            raise Exception('Regression should be trained first')
-        missed_count = list(map(lambda d:
-                            int(abs(self.predict(d) - d[-1]) > self.precision),
-                            data))
-        error = reduce(lambda x, y: x + y, missed_count) / len(missed_count)
-        return error * 100
 
     def calc_learning_rate(self, cur, rlen):
         """Calculates new value of learning rate based on the current one
@@ -52,7 +32,7 @@ class LinearRegression(object):
             for i, t in enumerate(self.theta):
                 gradients = []
                 for sample in data:
-                    h = self.predict(sample)
+                    h = self.predict([sample])[0]
                     x = sample[i]
                     y = sample[-1]
                     g = (y - h) * x
@@ -68,16 +48,18 @@ class LinearRegression(object):
         for i, t in enumerate(self.theta):
             x = sample[i]
             y = sample[-1]
-            h = self.predict(sample)
+            h = self.predict([sample])[0]
             gradient = (y - h) * x
             theta[i] = t + self.learning_rate * gradient
         self.theta = theta
 
-    def predict(self, sample):
+    def predict(self, data):
         """Evaluates target function using pre-trained parameters
         and provided sample"""
         if not self.theta:
             raise Exception('Regression should be trained first')
-        result = reduce(lambda p1, p2: p1 + p2,
-                        (t * sample[i] for i, t in enumerate(self.theta)))
+        result = []
+        for sample in data:
+            result.append(reduce(lambda p1, p2: p1 + p2,
+                          (t * sample[i] for i, t in enumerate(self.theta))))
         return result

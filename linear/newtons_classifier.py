@@ -14,12 +14,12 @@ class NewtonsClassifier(LogisticRegression):
                 gradients = []
                 hessians = []
                 for sample in data:
-                    h = self.predict(sample)
+                    h = self.predict([sample])[0]
                     x = sample[k]
                     xs = reduce(lambda s1, s2: s1 + s2, sample[:-1])
                     y = sample[-1]
                     g = (y - h) * x
-                    H = (h * (1 - h)) * x * xs
+                    H = h * (1 - h) * x * xs
                     gradients.append(g)
                     hessians.append(H)
                 gradient = reduce(lambda x, y: x + y, gradients)

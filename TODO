@@ -2,6 +2,5 @@
 TODO
 ----
 
- - refactor regression tester, add data caching
  - add LDA
  - add naive Bayes

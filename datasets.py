@@ -1,13 +1,11 @@
 
 TrainingSet1 = """
         test_data/linear.csv|@N,one,X,Y|:6"""
-
 ValidationSet1 = """
         test_data/linear.csv|@N,one,X,Y|7:"""
 
 TrainingSet2 = """
         test_data/logistic.csv|@N,one,X1,X2,Y|:9"""
-
 ValidationSet2 = """
         test_data/logistic.csv|@N,one,X1,X2,Y|10:"""
 
@@ -25,7 +23,6 @@ TrainingSet3 = """
         data/Errors Per Minute.csv|@date,value;
         data/Average Response Time.csv|@date,value>400;
     """
-
 ValidationSet3 = """
         data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|500:1000;
         data/CLR-Locks and Threads-Current Physical Threads.csv|@date,value;
@@ -43,6 +40,10 @@ ValidationSet3 = """
 
 TrainingSet4 = """
         test_data/logistic2.csv|one,X1,X2,Y|:50"""
-
 ValidationSet4 = """
         test_data/logistic2.csv|one,X1,X2,Y|51:"""
+
+TrainingSet5 = """
+        test_data/logistic.csv|X1,X2,Y|:9"""
+ValidationSet5 = """
+        test_data/logistic.csv|X1,X2,Y|10:"""

@@ -44,6 +44,6 @@ ValidationSet4 = """
         test_data/logistic2.csv|one,X1,X2,Y|51:"""
 
 TrainingSet5 = """
-        test_data/logistic.csv|X1,X2,Y|:9"""
+        test_data/logistic2.csv|X1,X2,Y|:80"""
 ValidationSet5 = """
-        test_data/logistic.csv|X1,X2,Y|10:"""
+        test_data/logistic2.csv|X1,X2,Y|81:"""

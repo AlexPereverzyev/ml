@@ -4,20 +4,9 @@ from datasets import *
 from linear.predictor import LinearRegression
 from linear.classifier import LogisticRegression
 from linear.newtons_classifier import NewtonsClassifier
-from descriminant_analysis.gaussian_classifier import GaussianClassifier
 from test_tools.regression_tester import RegressionTester
 from test_tools.data_cache import DictionaryCache
 
-# from data_tools.data_iter import DataIterator
-# with DataIterator(TrainingSet5) as feed:
-#     data = list(feed)
-# gc = GaussianClassifier([0, 1], 2)
-# gc.train(data)
-# with DataIterator(ValidationSet5) as feed:
-#     data = list(feed)
-# print(gc)
-# for p in gc.predict(data):
-#     print(p)
 
 _mask = 'A'
 _rs = OrderedDict([

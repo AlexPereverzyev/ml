@@ -1,5 +1,5 @@
 import math
-from numpy.linalg import det, inv
+from numpy.linalg import inv
 
 
 class GaussianClassifier(object):
@@ -12,18 +12,18 @@ class GaussianClassifier(object):
         self.total = 0
         self.classes = classes
         self.counts = {label: 0 for label in classes}
-        self.probs = {label: 0 for label in classes}
-        self.means = {label: [0 for _ in range(dimensions)]
+        self.probs = {label: 0. for label in classes}
+        self.means = {label: [0. for _ in range(dimensions)]
                       for label in classes}
-        self.cov_matrix = [[0 for _ in range(dimensions)]
+        self.cov_matrix = [[0. for _ in range(dimensions)]
                            for __ in range(dimensions)]
         self.cov_matrix_inv = None
-        self.scale = 1
 
     def __str__(self):
         result = ''
         for label in self.classes:
-            result += '{0}: {1}\n'.format(label, self.means[label])
+            result += '{0}({1}): {2}\n'.format(
+                label, self.counts[label], self.means[label])
         return result
 
     def train(self, data):
@@ -45,13 +45,11 @@ class GaussianClassifier(object):
             mean_delta = [sample[i] - m for i, m in enumerate(mean)]
             for i in range(self.dimensions):
                 for j in range(self.dimensions):
-                    c = mean_delta[i] * mean_delta[j]
+                    c = mean_delta[i] * mean_delta[j] / self.total
                     self.cov_matrix[i][j] += c
         self.cov_matrix_inv = inv(self.cov_matrix)
-        # self.scale = 1. / (math.pow(2 * math.pi, self.dimensions / 2) *
-        #                    math.pow(det(self.cov_matrix), .5))
 
-    def predict(self, data):
+    def predict_proba(self, data):
         result = []
         for sample in data:
             probs = []
@@ -67,7 +65,24 @@ class GaussianClassifier(object):
                 dot_product = 0
                 for i in range(self.dimensions):
                     dot_product += -.5 * cov_vector[i] * mean_delta[i]
-                prob = self.scale * math.exp(dot_product)
+                prob = math.exp(dot_product)
                 probs.append(prob)
             result.append(probs)
         return result
+
+# from data_tools.data_iter import DataIterator
+# from descriminant_analysis.gaussian_classifier import GaussianClassifier
+# from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+# with DataIterator(TrainingSet5) as feed:
+#     data = list(feed)
+# gc = GaussianClassifier([0, 1], 2)
+# gc.train(data)
+# lda = LinearDiscriminantAnalysis(solver='svd')
+# lda.fit([s[:-1] for s in data], [s[-1] for s in data])
+
+# with DataIterator(ValidationSet5) as feed:
+#     data = list(feed)
+# for p in gc.predict_proba(data):
+#     print(p)
+# print(lda.predict_proba([s[:-1] for s in data]))

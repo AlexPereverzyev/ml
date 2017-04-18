@@ -47,3 +47,8 @@ TrainingSet5 = """
         test_data/logistic2.csv|X1,X2,Y|:80"""
 ValidationSet5 = """
         test_data/logistic2.csv|X1,X2,Y|81:"""
+
+TrainingSet6 = """
+        test_data/random_words.csv|sell,car,date,money,free,discount,open,weekend,deal,market,orange,apple,Y|:10"""
+ValidationSet6 = """
+        test_data/random_words.csv|sell,car,date,money,free,discount,open,weekend,deal,market,orange,apple,Y|11:"""

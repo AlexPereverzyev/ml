@@ -7,8 +7,44 @@ from linear.newtons_classifier import NewtonsClassifier
 from test_tools.regression_tester import RegressionTester
 from test_tools.data_cache import DictionaryCache
 
+# todo: refactor
+from data_tools.data_iter import DataIterator
+from generative.gaussian import GaussianClassifier
+from sklearn.naive_bayes import GaussianNB
+with DataIterator(TrainingSet5) as feed:
+    data = list(feed)
+gc = GaussianClassifier([0, 1], 2)
+gc.train(data)
+print(gc)
+gnb = GaussianNB()
+gnb.fit([s[:-1] for s in data], [s[-1] for s in data])
+with DataIterator(ValidationSet5) as feed:
+    data = list(feed)
+for t1, t2 in zip(gc.predict_proba(data),
+                  gnb.predict_proba([s[:-1] for s in data])):
+    print('MY : {0:.4f} {1:.4f}\nSKL: {2:.4f} {3:.4f}'
+          .format(*t1, *t2))
+print()
 
-_mask = 'A'
+from data_tools.data_iter import DataIterator
+from generative.naive_bayes import NaiveBayesClassifier
+from sklearn.naive_bayes import MultinomialNB
+with DataIterator(TrainingSet6) as feed:
+    data = list(feed)
+nbc = NaiveBayesClassifier([0, 1], 12)
+nbc.train(data)
+print(nbc)
+mnb = MultinomialNB()
+mnb.fit([s[:-1] for s in data], [s[-1] for s in data])
+with DataIterator(ValidationSet6) as feed:
+    data = list(feed)
+for t1, t2 in zip(nbc.predict_proba(data),
+                  mnb.predict_proba([s[:-1] for s in data])):
+    print('MY : {0:.4f} {1:.4f}\nSKL: {2:.4f} {3:.4f}'
+          .format(*t1, *t2))
+print()
+
+_mask = '?'
 _rs = OrderedDict([
     ('Linear Regression',
         (LinearRegression(1, 100, 0.00001),

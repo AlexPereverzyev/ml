@@ -3,7 +3,7 @@ from numpy.linalg import inv
 
 
 class GaussianClassifier(object):
-    """Classifier based on linear descriminant analysis (LDA)"""
+    """Classifier based on Gaussian distribution (buggy)"""
 
     def __init__(self, classes, dimensions=1):
         if not classes or not dimensions or dimensions < 1:
@@ -22,8 +22,8 @@ class GaussianClassifier(object):
     def __str__(self):
         result = ''
         for label in self.classes:
-            result += '{0}({1}): {2}\n'.format(
-                label, self.counts[label], self.means[label])
+            result += '{0} ({1}): {2}\n'.format(
+                label, self.probs[label], self.means[label])
         return result
 
     def train(self, data):
@@ -69,20 +69,3 @@ class GaussianClassifier(object):
                 probs.append(prob)
             result.append(probs)
         return result
-
-# from data_tools.data_iter import DataIterator
-# from descriminant_analysis.gaussian_classifier import GaussianClassifier
-# from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
-# with DataIterator(TrainingSet5) as feed:
-#     data = list(feed)
-# gc = GaussianClassifier([0, 1], 2)
-# gc.train(data)
-# lda = LinearDiscriminantAnalysis(solver='svd')
-# lda.fit([s[:-1] for s in data], [s[-1] for s in data])
-
-# with DataIterator(ValidationSet5) as feed:
-#     data = list(feed)
-# for p in gc.predict_proba(data):
-#     print(p)
-# print(lda.predict_proba([s[:-1] for s in data]))

@@ -2,7 +2,6 @@
 TODO
 ----
 
- - refactor tester for generative methods
- - fix Gaussian classifier
+ - fix naive Bayes classifiers
  - add plotting
  - add LDA

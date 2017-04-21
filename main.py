@@ -10,8 +10,11 @@ from generative.gaussian import GaussianClassifier
 from test_tools.regression_tester import RegressionTester
 from test_tools.generative_tester import GenerativeTester
 from test_tools.data_cache import DictionaryCache
+from data_tools.data_plotter import DataPlotter
 
-_mask = 'G'
+# DataPlotter.plot_all(TrainingSet3, [0], True)
+
+_mask = '?'
 _rs = OrderedDict([
     ('Naive Bayes (Gaussian)',
         (GaussianClassifier([0., 1.], 2),

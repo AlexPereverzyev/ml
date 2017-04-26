@@ -10,11 +10,18 @@ from generative.gaussian import GaussianClassifier
 from test_tools.regression_tester import RegressionTester
 from test_tools.generative_tester import GenerativeTester
 from test_tools.data_cache import DictionaryCache
-from data_tools.data_plotter import DataPlotter
 
-# DataPlotter.plot_all(TrainingSet3, [0], True)
+# from data_tools.data_plotter import DataPlotter
+# DataPlotter.plot_all(
+#     """
+#         data/CLR-Locks and Threads-Current Physical Threads.csv|@date,value;
+#         data/IIS-CPU.csv|@date,value;
+#         data/Calls Per Minute.csv|@date,value;
+#         data/Errors Per Minute.csv|@date,value;
+#         data/Average Response Time.csv|@date,value;
+#     """)
 
-_mask = '?'
+_mask = 'G'
 _rs = OrderedDict([
     ('Naive Bayes (Gaussian)',
         (GaussianClassifier([0., 1.], 2),

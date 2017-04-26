@@ -10,7 +10,7 @@ ValidationSet2 = """
         test_data/logistic.csv|@N,one,X1,X2,Y|10:"""
 
 TrainingSet3 = """
-        data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|:500;
+        data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|:1000;
         data/CLR-Locks and Threads-Current Physical Threads.csv|@date,value;
         data/Hardware Resources-CPU-Busy.csv|@date,value;
         data/Hardware Resources-Memory-Used.csv|@date,value;
@@ -24,7 +24,7 @@ TrainingSet3 = """
         data/Average Response Time.csv|@date,value>400;
     """
 ValidationSet3 = """
-        data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|500:1000;
+        data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|3000:;
         data/CLR-Locks and Threads-Current Physical Threads.csv|@date,value;
         data/Hardware Resources-CPU-Busy.csv|@date,value;
         data/Hardware Resources-Memory-Used.csv|@date,value;

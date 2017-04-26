@@ -1,6 +1,7 @@
 import math
 from numpy.linalg import inv
 from generative.naive_bayes import NaiveBayesClassifier
+from functools import reduce
 
 
 class GaussianClassifier(NaiveBayesClassifier):
@@ -28,11 +29,10 @@ class GaussianClassifier(NaiveBayesClassifier):
         for sample in data:
             label = sample[-1]
             mean = self.theta[label]
-            mean_delta = [sample[i] - m for i, m in enumerate(mean)]
+            delta = [sample[i] - m for i, m in enumerate(mean)]
             for i in range(self.dimensions):
                 for j in range(self.dimensions):
-                    c = mean_delta[i] * mean_delta[j] / self.total
-                    self.cov_matrix[i][j] += c
+                    self.cov_matrix[i][j] += delta[i] * delta[j] / self.total
         self.cov_matrix_inv = inv(self.cov_matrix)
 
     def predict_proba(self, data):
@@ -41,16 +41,14 @@ class GaussianClassifier(NaiveBayesClassifier):
             probs = []
             for label in self.classes:
                 mean = self.theta[label]
-                mean_delta = [sample[i] - m for i, m in enumerate(mean)]
-                cov_vector = []
+                delta = [sample[i] - m for i, m in enumerate(mean)]
+                row_vector = [0 for _ in range(self.dimensions)]
                 for i in range(self.dimensions):
-                    v = 0
                     for j in range(self.dimensions):
-                        v += self.cov_matrix_inv[i][j] * mean_delta[j]
-                    cov_vector.append(v)
-                dot_product = 0
-                for i in range(self.dimensions):
-                    dot_product += -.5 * cov_vector[i] * mean_delta[i]
+                        row_vector[i] += self.cov_matrix_inv[j][i] * delta[j]
+                dot_product = reduce(lambda x, y: x + y,
+                                     (-.5 * row_vector[i] * delta[i]
+                                      for i in range(self.dimensions)))
                 prob = math.exp(dot_product)
                 probs.append(prob)
             result.append(probs)

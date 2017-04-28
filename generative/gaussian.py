@@ -5,13 +5,14 @@ from functools import reduce
 
 
 class GaussianClassifier(NaiveBayesClassifier):
-    """Classifier based on Gaussian distribution (buggy)"""
+    """Classifier based on plain Gaussian distribution"""
 
     def __init__(self, classes, dimensions=1):
         super().__init__(classes, dimensions)
-        self.cov_matrix = [[0. for _ in range(dimensions)]
+        self.cov_matrix = {label: [[0 for _ in range(dimensions)]
                            for __ in range(dimensions)]
-        self.cov_matrix_inv = None
+                           for label in self.classes}
+        self.cov_matrix_inv = {label: None for label in self.classes}
 
     def train(self, data):
         for sample in data:
@@ -28,12 +29,16 @@ class GaussianClassifier(NaiveBayesClassifier):
             self.theta[label] = [m / count for m in mean]
         for sample in data:
             label = sample[-1]
+            prob = self.probs[label]
             mean = self.theta[label]
+            cov_matrix = self.cov_matrix[label]
             delta = [sample[i] - m for i, m in enumerate(mean)]
             for i in range(self.dimensions):
                 for j in range(self.dimensions):
-                    self.cov_matrix[i][j] += delta[i] * delta[j] / self.total
-        self.cov_matrix_inv = inv(self.cov_matrix)
+                    cov_matrix[i][j] += prob * delta[i] * delta[j]
+        for label in self.classes:
+            cov_matrix = self.cov_matrix[label]
+            self.cov_matrix_inv[label] = inv(cov_matrix)
 
     def predict_proba(self, data):
         result = []
@@ -41,13 +46,14 @@ class GaussianClassifier(NaiveBayesClassifier):
             probs = []
             for label in self.classes:
                 mean = self.theta[label]
+                cov_matrix_inv = self.cov_matrix_inv[label]
                 delta = [sample[i] - m for i, m in enumerate(mean)]
-                row_vector = [0 for _ in range(self.dimensions)]
+                v = [0 for _ in range(self.dimensions)]
                 for i in range(self.dimensions):
                     for j in range(self.dimensions):
-                        row_vector[i] += self.cov_matrix_inv[j][i] * delta[j]
+                        v[i] += cov_matrix_inv[i][j] * delta[j]
                 dot_product = reduce(lambda x, y: x + y,
-                                     (-.5 * row_vector[i] * delta[i]
+                                     (-.5 * v[i] * delta[i]
                                       for i in range(self.dimensions)))
                 prob = math.exp(dot_product)
                 probs.append(prob)

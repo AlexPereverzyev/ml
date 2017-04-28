@@ -10,8 +10,8 @@ class NaiveBayesClassifier(object):
         self.classes = classes
         self.total = 0
         self.counts = {label: 0 for label in classes}
-        self.probs = {label: 0. for label in classes}
-        self.theta = {label: [0. for _ in range(dimensions)]
+        self.probs = {label: 0 for label in classes}
+        self.theta = {label: [0 for _ in range(dimensions)]
                       for label in classes}
 
     def __str__(self):

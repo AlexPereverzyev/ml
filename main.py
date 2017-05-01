@@ -7,39 +7,11 @@ from linear.classifier import LogisticRegression
 from linear.newtons_classifier import NewtonsClassifier
 from generative.naive_bayes import NaiveBayesClassifier
 from generative.gaussian import GaussianClassifier
+from descriminant.linear_classifier import LinearDescriminantClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from test_tools.regression_tester import RegressionTester
 from test_tools.generative_tester import GenerativeTester
 from test_tools.data_cache import DictionaryCache
-
-# todo: refactor
-from data_tools.data_iter import DataIterator
-from descriminant.linear_classifier import LinearDescriminantClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
-with DataIterator(TrainingSet5) as source:
-    data = list(source)
-X = [s[:-1] for s in data]
-Y = [s[-1] for s in data]
-
-lda = LinearDescriminantClassifier([0., 1.], 2)
-lda.train(data)
-X0 = lda.transform(X)
-
-match, total = 0, 0
-for s, y in zip(lda.predict(X), Y):
-    total += 1
-    match += (s == y)
-print(match / total * 100)
-
-lda = LinearDiscriminantAnalysis(solver='eigen')
-lda.fit(X, Y)
-X1 = lda.transform(X)
-
-match, total = 0, 0
-for s, y in zip(lda.predict(X), Y):
-    total += 1
-    match += (s == y)
-print(match / total * 100)
 
 # from data_tools.data_plotter import DataPlotter
 # DataPlotter.plot_all(
@@ -51,8 +23,16 @@ print(match / total * 100)
 #         data/Average Response Time.csv|@date,value;
 #     """)
 
-_mask = '?'
+_mask = 'D'
 _rs = OrderedDict([
+    ('Linear Descriminant Classifier',
+        (LinearDescriminantClassifier([0., 1.], 2),
+         TrainingSet5, ValidationSet5, .1, 'D', GenerativeTester)),
+
+    ('Linear Descriminant Classifier (SKL)',
+        (LinearDiscriminantAnalysis(solver='eigen'),
+         TrainingSet5, ValidationSet5, .1, 'D', GenerativeTester)),
+
     ('Naive Bayes (Gaussian)',
         (GaussianClassifier([0., 1.], 2),
          TrainingSet5, ValidationSet5, .1, 'G', GenerativeTester)),

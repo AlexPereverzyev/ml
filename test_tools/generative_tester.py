@@ -12,22 +12,34 @@ class GenerativeTester(RegressionTester):
         if not self.is_skl:
             result = str(self.regression)
         else:
-            count = reduce(lambda a, b: a + b, self.regression.class_count_)
+            priors = self._get_priors_skl()
+            source = self._get_theta_skl()
             for i, label in enumerate(self.regression.classes_):
-                result += '{0} ({1}): '.format(
-                    label,
-                    self.regression.class_count_[i] / count)
-                if hasattr(self.regression, 'theta_'):
-                    source = self.regression.theta_[i]
-                    func = lambda x: x
-                else:
-                    source = self.regression.feature_log_prob_[i]
-                    func = lambda x: math.exp(x)
-                result += ', '.join(
-                    ('{0:.4f}'.format(func(v)) for v in source))
+                result += '{0} ({1}): '.format(label, priors[i])
+                result += ', '.join(('{0:.4f}'.format(v) for v in source[i]))
                 result += '\n' if i < len(self.regression.classes_) - 1 else ''
         print('-' * 20, self.key, '-' * 20)
         print(result)
+
+    def _get_priors_skl(self):
+        if hasattr(self.regression, 'class_count_'):
+            total = reduce(lambda a, b: a + b, self.regression.class_count_)
+            return [count / total for count in self.regression.class_count_]
+        if hasattr(self.regression, 'priors_'):
+            return self.regression.priors_
+        if hasattr(self.regression, 'priors'):
+            return self.regression.priors
+        raise Exception('The solver is not supported')
+
+    def _get_theta_skl(self):
+        if hasattr(self.regression, 'theta_'):
+            return self.regression.theta_
+        if hasattr(self.regression, 'means_'):
+            return self.regression.means_
+        if hasattr(self.regression, 'feature_log_prob_'):
+            return [[math.exp(l) for l in features]
+                    for features in self.regression.feature_log_prob_]
+        raise Exception('The solver is not supported')
 
     def prints(self, dataset):
         data = self.data_cache[dataset]

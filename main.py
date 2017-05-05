@@ -2,6 +2,7 @@ from collections import OrderedDict
 from datasets import *
 from sklearn import linear_model
 from sklearn import naive_bayes
+from sklearn.neural_network import MLPClassifier
 from linear.predictor import LinearRegression
 from linear.classifier import LogisticRegression
 from linear.newtons_classifier import NewtonsClassifier
@@ -23,8 +24,13 @@ from test_tools.data_cache import DictionaryCache
 #         data/Average Response Time.csv|@date,value;
 #     """)
 
-_mask = 'D'
+_mask = 'N'
 _rs = OrderedDict([
+    ('Multi-Layer Perceptron Classifier (SKL)',
+        (MLPClassifier(solver='lbfgs', alpha=1e-5,
+                       hidden_layer_sizes=(3,), random_state=1),
+         TrainingSet5, ValidationSet5, .1, 'N', RegressionTester)),
+
     ('Linear Descriminant Classifier',
         (LinearDescriminantClassifier([0., 1.], 2),
          TrainingSet5, ValidationSet5, .1, 'D', GenerativeTester)),

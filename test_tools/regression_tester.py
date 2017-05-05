@@ -31,9 +31,8 @@ class RegressionTester(object):
         if not self.is_skl:
             rstring = str(self.regression)
         else:
-            rstring = '{0} {1}'.format(
-                self.regression.intercept_,
-                str(self.regression.coef_).replace('\n', ''))
+            rstring = '{0} {1}'.format(self._get_intercept(),
+                                       self._get_coef())
         print('-' * 20, self.key, '-' * 20)
         print('P = ', rstring)
 
@@ -58,3 +57,25 @@ class RegressionTester(object):
         X = [f[lt:-1] for f in data]
         Y = [f[-1] for f in data]
         return X, Y
+
+    def _get_intercept(self):
+        if hasattr(self.regression, 'intercept_'):
+            return self.regression.intercept_
+        if hasattr(self.regression, 'intercepts_'):
+            return (str(self.regression.intercepts_)
+                    .replace('\n', '')
+                    .replace('\t', '')
+                    .replace(' ', '')
+                    .replace('array', ''))
+        raise Exception('Solver not supported')
+
+    def _get_coef(self):
+        if hasattr(self.regression, 'coef_'):
+            return str(self.regression.coef_).replace('\n', '')
+        if hasattr(self.regression, 'coefs_'):
+            return (str(self.regression.coefs_)
+                    .replace('\n', '')
+                    .replace('\t', '')
+                    .replace(' ', '')
+                    .replace('array', ''))
+        raise Exception('Solver not supported')

@@ -25,17 +25,15 @@ from test_tools.data_cache import DictionaryCache
 #         data/Average Response Time.csv|@date,value;
 #     """)
 
-mlp = MultiLayerPerceptronClassifier(2, layers=(3,))
-print(mlp)
-mlp.train([])
-print(mlp.predict([[1, 1]]))
-
-_mask = '?'
+_mask = 'N'
 _rs = OrderedDict([
+    ('Multi-Layer Perceptron Classifier',
+        (MultiLayerPerceptronClassifier(2, layers=(3,), iterations=250),
+         TrainingSet5, ValidationSet5, .2, 'N', RegressionTester)),
+
     ('Multi-Layer Perceptron Classifier (SKL)',
-        (MLPClassifier(solver='lbfgs', alpha=1e-5,
-                       hidden_layer_sizes=(3,), random_state=1),
-         TrainingSet5, ValidationSet5, .1, 'N', RegressionTester)),
+        (MLPClassifier(hidden_layer_sizes=(3,), random_state=1),
+         TrainingSet5, ValidationSet5, .2, 'N', RegressionTester)),
 
     ('Linear Descriminant Classifier',
         (LinearDescriminantClassifier([0., 1.], 2),

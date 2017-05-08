@@ -1,4 +1,5 @@
 
+import random
 from functools import reduce
 from neural_net.activation_func import perceptron
 
@@ -7,7 +8,8 @@ class Perceptron(object):
     """Basic building block of neural network: has number of outputs,
        their parameters and activation function"""
     def __init__(self, dimensions=1, activation=perceptron):
-        self.theta = [0 for _ in range(dimensions + 1)]
+        self.theta = [random.uniform(-0.05, 0.05)
+                      for _ in range(dimensions + 1)]
         self.activation = activation
 
     def __str__(self):

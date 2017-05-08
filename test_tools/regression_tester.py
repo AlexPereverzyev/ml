@@ -16,7 +16,8 @@ class RegressionTester(object):
 
     @property
     def is_skl(self):
-        return not hasattr(self.regression, 'theta')
+        return not (hasattr(self.regression, 'theta') or
+                    hasattr(self.regression, 'train'))
 
     def train(self, dataset):
         data = self.data_cache[dataset]

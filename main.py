@@ -10,6 +10,7 @@ from generative.naive_bayes import NaiveBayesClassifier
 from generative.gaussian import GaussianClassifier
 from descriminant.linear_classifier import LinearDescriminantClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from neural_net.mlp_classifier import MultiLayerPerceptronClassifier
 from test_tools.regression_tester import RegressionTester
 from test_tools.generative_tester import GenerativeTester
 from test_tools.data_cache import DictionaryCache
@@ -24,7 +25,12 @@ from test_tools.data_cache import DictionaryCache
 #         data/Average Response Time.csv|@date,value;
 #     """)
 
-_mask = 'N'
+mlp = MultiLayerPerceptronClassifier(2, layers=(3,))
+print(mlp)
+mlp.train([])
+print(mlp.predict([[1, 1]]))
+
+_mask = '?'
 _rs = OrderedDict([
     ('Multi-Layer Perceptron Classifier (SKL)',
         (MLPClassifier(solver='lbfgs', alpha=1e-5,

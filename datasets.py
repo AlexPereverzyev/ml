@@ -1,12 +1,12 @@
 
 TrainingSet1 = """
         test_data/linear.csv|@N,one,X,Y|:6"""
-ValidationSet1 = """
+TestSet1 = """
         test_data/linear.csv|@N,one,X,Y|7:"""
 
 TrainingSet2 = """
         test_data/logistic.csv|@N,one,X1,X2,Y|:9"""
-ValidationSet2 = """
+TestSet2 = """
         test_data/logistic.csv|@N,one,X1,X2,Y|10:"""
 
 TrainingSet3 = """
@@ -23,7 +23,7 @@ TrainingSet3 = """
         data/Errors Per Minute.csv|@date,value;
         data/Average Response Time.csv|@date,value>400;
     """
-ValidationSet3 = """
+TestSet3 = """
         data/CLR-Garbage Collection-GC Time Spent.csv|@date,one,value|3000:;
         data/CLR-Locks and Threads-Current Physical Threads.csv|@date,value;
         data/Hardware Resources-CPU-Busy.csv|@date,value;
@@ -40,15 +40,15 @@ ValidationSet3 = """
 
 TrainingSet4 = """
         test_data/logistic2.csv|one,X1,X2,Y|:50"""
-ValidationSet4 = """
+TestSet4 = """
         test_data/logistic2.csv|one,X1,X2,Y|51:"""
 
 TrainingSet5 = """
         test_data/logistic2.csv|X1,X2,Y|:80"""
-ValidationSet5 = """
+TestSet5 = """
         test_data/logistic2.csv|X1,X2,Y|81:"""
 
 TrainingSet6 = """
         test_data/random_words.csv|sell,car,date,money,free,discount,open,weekend,deal,market,orange,apple,Y|:10"""
-ValidationSet6 = """
+TestSet6 = """
         test_data/random_words.csv|sell,car,date,money,free,discount,open,weekend,deal,market,orange,apple,Y|11:"""

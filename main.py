@@ -25,83 +25,83 @@ from test_tools.data_cache import DictionaryCache
 #         data/Average Response Time.csv|@date,value;
 #     """)
 
-_mask = 'N'
+_mask = 'SNG'
 _rs = OrderedDict([
     ('Multi-Layer Perceptron Classifier',
         (MultiLayerPerceptronClassifier(2, layers=(3,), iterations=250),
-         TrainingSet5, ValidationSet5, .2, 'N', RegressionTester)),
+         TrainingSet5, TestSet5, .2, 'N', RegressionTester)),
 
     ('Multi-Layer Perceptron Classifier (SKL)',
         (MLPClassifier(hidden_layer_sizes=(3,), random_state=1),
-         TrainingSet5, ValidationSet5, .2, 'N', RegressionTester)),
+         TrainingSet5, TestSet5, .2, 'N', RegressionTester)),
 
     ('Linear Descriminant Classifier',
         (LinearDescriminantClassifier([0., 1.], 2),
-         TrainingSet5, ValidationSet5, .1, 'D', GenerativeTester)),
+         TrainingSet5, TestSet5, .1, 'D', GenerativeTester)),
 
     ('Linear Descriminant Classifier (SKL)',
         (LinearDiscriminantAnalysis(solver='eigen'),
-         TrainingSet5, ValidationSet5, .1, 'D', GenerativeTester)),
+         TrainingSet5, TestSet5, .1, 'D', GenerativeTester)),
 
     ('Naive Bayes (Gaussian)',
         (GaussianClassifier([0., 1.], 2),
-         TrainingSet5, ValidationSet5, .1, 'G', GenerativeTester)),
+         TrainingSet5, TestSet5, .1, 'G', GenerativeTester)),
 
     ('Naive Bayes (Gaussian-SKL)',
         (naive_bayes.GaussianNB(),
-         TrainingSet5, ValidationSet5, .1, 'G', GenerativeTester)),
+         TrainingSet5, TestSet5, .1, 'G', GenerativeTester)),
 
     ('Naive Bayes (multinomial)',
         (NaiveBayesClassifier([0., 1.], 12),
-         TrainingSet6, ValidationSet6, .1, 'G', GenerativeTester)),
+         TrainingSet6, TestSet6, .1, 'G', GenerativeTester)),
 
     ('Naive Bayes (multinomial-SKL)',
         (naive_bayes.MultinomialNB(),
-         TrainingSet6, ValidationSet6, .1, 'G', GenerativeTester)),
+         TrainingSet6, TestSet6, .1, 'G', GenerativeTester)),
 
     ('Linear Regression',
         (LinearRegression(1, 100, 0.00001),
-         TrainingSet1, ValidationSet1, 1, 'S', RegressionTester)),
+         TrainingSet1, TestSet1, 1, 'S', RegressionTester)),
 
     ('Linear Regression (SKL)',
         (linear_model.LinearRegression(),
-         TrainingSet1, ValidationSet1, 3, 'S', RegressionTester)),
+         TrainingSet1, TestSet1, 3, 'S', RegressionTester)),
 
     ('Logistic Regression 1',
         (LogisticRegression(2, 100, 0.0005),
-         TrainingSet2, ValidationSet2, .1, 'S', RegressionTester)),
+         TrainingSet2, TestSet2, .1, 'S', RegressionTester)),
 
     ('Logistic Regression 1 (SKL)',
         (linear_model.LogisticRegression(solver='liblinear'),
-         TrainingSet2, ValidationSet2, .1, 'S', RegressionTester)),
+         TrainingSet2, TestSet2, .1, 'S', RegressionTester)),
 
     ('Logistic Regression 2',
         (LogisticRegression(2, 100, 0.5),
-         TrainingSet4, ValidationSet4, .1, 'A', RegressionTester)),
+         TrainingSet4, TestSet4, .1, 'A', RegressionTester)),
 
     ('Logistic Regression 2 (SKL)',
         (linear_model.LogisticRegression(solver='liblinear'),
-         TrainingSet4, ValidationSet4, .1, 'A', RegressionTester)),
+         TrainingSet4, TestSet4, .1, 'A', RegressionTester)),
 
     ('Logistic Regression 2 (NR)',
         (NewtonsClassifier(2, 5, 1),
-         TrainingSet4, ValidationSet4, .1, 'A', RegressionTester)),
+         TrainingSet4, TestSet4, .1, 'A', RegressionTester)),
 
     ('Logistic Regression 2 (NR-SKL)',
         (linear_model.LogisticRegression(solver='newton-cg'),
-         TrainingSet4, ValidationSet4, .1, 'A', RegressionTester)),
+         TrainingSet4, TestSet4, .1, 'A', RegressionTester)),
 
     ('Slowness Probability',
         (LogisticRegression(11, 1000, 0.0000001),
-         TrainingSet3, ValidationSet3, .1, 'L', RegressionTester)),
+         TrainingSet3, TestSet3, .1, 'L', RegressionTester)),
 
     ('Slowness Probability (SKL)',
         (linear_model.LogisticRegression(solver='liblinear'),
-         TrainingSet3, ValidationSet3, .1, 'L', RegressionTester)),
+         TrainingSet3, TestSet3, .1, 'L', RegressionTester)),
 
     ('Slowness Probability (NR-SKL)',
         (linear_model.LogisticRegression(solver='newton-cg'),
-         TrainingSet3, ValidationSet3, .1, 'L', RegressionTester)),
+         TrainingSet3, TestSet3, .1, 'L', RegressionTester)),
 ])
 _sc = DictionaryCache()
 

@@ -1,0 +1,21 @@
+
+search-terms:
+  - alex
+  - kate
+
+search-results:
+  offset: 0
+  page-size: 2
+  page-count: 1
+
+storage-path: files
+
+out-file-templ: ids_map_{0}.json
+
+pictures_dir: pic
+
+processed_pic_dir: pic_proc
+
+logging-config-path: logging.yaml
+
+access-token: EAACEdEose0cBALc12wAudPwt5kQqUAAh9VrY7hMfvCjjCnAeUjYiaPGjDsjZCUrpfZAfcSx2mZC8Qg8i2ZCZAhpiq7NS4hEBLiefamL3VPzX4wde9CDzOf1ZBmDePZCn0yJW2XgYVynCKzGCWhR4zS7dxu6gEsNj3gJrp0ieShrW14TfVKo3Rg9dyuUzpRTwLYZD

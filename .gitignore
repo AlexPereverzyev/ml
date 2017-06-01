@@ -1,6 +1,7 @@
-# data files
+# data folders
 data
 test_data
+avatars/files
 
 # Mac OS
 .DS_Store

@@ -1,6 +1,6 @@
 
 import yaml
-import logging 
+import logging
 import logging.config
 
 

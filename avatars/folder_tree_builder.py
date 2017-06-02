@@ -15,6 +15,6 @@ class FolderTreeBuilder(Task):
         return TaskResult.OK
 
     def _create_dir_safe(self, dirname):
-        if not os.path.exists(dirname):            
+        if not os.path.exists(dirname):
             os.makedirs(dirname)
             self.logger.info('created directory: {0}'.format(dirname))

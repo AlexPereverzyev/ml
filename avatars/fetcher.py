@@ -12,19 +12,19 @@ _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
 
 _client = FacebookClient(
-            logging.getLogger(FacebookClient.__name__), 
-            config.current.access_token)
+    logging.getLogger(FacebookClient.__name__),
+    config.current.access_token)
 
 _pipeline = [
     FolderTreeBuilder(
         config.current,
         logging.getLogger(FolderTreeBuilder.__name__)),
     AvatarSearcher(
-        config.current, 
+        config.current,
         logging.getLogger(AvatarSearcher.__name__),
         _client),
     AvatarLoader(
-        config.current, 
+        config.current,
         logging.getLogger(AvatarLoader.__name__),
         _client)
 ]

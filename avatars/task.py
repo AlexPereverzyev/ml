@@ -10,7 +10,7 @@ class Task(object):
 
     def __init__(self, config, logger):
         self.config = config
-        self.logger = logger 
+        self.logger = logger
 
     def __str__(self):
         return type(self).__name__
@@ -25,14 +25,17 @@ class Task(object):
         raise NotImplementedError
 
     def paths_for(self, term, page=1):
-        term_dir = os.path.join(self.config.storage_path, term.replace(' ', '_'))
+        term_dir = os.path.join(
+            self.config.storage_path, term.replace(' ', '_'))
         pic_dir = os.path.join(term_dir, self.config.pictures_dir)
         pic_proc_dir = os.path.join(term_dir, self.config.processed_pic_dir)
-        ids_map_file = os.path.join(term_dir, self.config.out_file_templ.format(page))
+        ids_map_file = os.path.join(
+            term_dir, self.config.out_file_templ.format(page))
         return term_dir, pic_dir, pic_proc_dir, ids_map_file
 
     def path_for_avatar(self, term, id, ext):
-        term_dir = os.path.join(self.config.storage_path, term.replace(' ', '_'))
+        term_dir = os.path.join(
+            self.config.storage_path, term.replace(' ', '_'))
         pic_dir = os.path.join(term_dir, self.config.pictures_dir)
         avatar_path = os.path.join(pic_dir, '{0}.{1}'.format(id, ext))
         return avatar_path

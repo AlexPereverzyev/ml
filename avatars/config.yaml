@@ -1,4 +1,6 @@
 
+logging-config-path: logging.yaml
+
 search-terms:
   - alex
   - kate
@@ -16,6 +18,6 @@ pictures_dir: pic
 
 processed_pic_dir: pic_proc
 
-logging-config-path: logging.yaml
+overwrite-existing: False
 
-access-token: EAACEdEose0cBALc12wAudPwt5kQqUAAh9VrY7hMfvCjjCnAeUjYiaPGjDsjZCUrpfZAfcSx2mZC8Qg8i2ZCZAhpiq7NS4hEBLiefamL3VPzX4wde9CDzOf1ZBmDePZCn0yJW2XgYVynCKzGCWhR4zS7dxu6gEsNj3gJrp0ieShrW14TfVKo3Rg9dyuUzpRTwLYZD
+access-token: EAACEdEose0cBAKBptDNh2AMV7A0pHtYLDP9UCZBIZCnbyklephYPL6kXBJmhjpojqVyg9XMdXs8umWRUzNF3XlMGPMH6dYssXkk4DoUpF5uvWe0jhXoE0Qk8tmzQbkRmcYd5YZB7vlxSO7tpYgiQAOLq0QIOtTZBFET8ArTgfZCXP50coBcrSBDrGv9kaVd0ZD

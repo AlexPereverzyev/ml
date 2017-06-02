@@ -1,5 +1,6 @@
 
 import os
+import os.path
 import enum
 
 
@@ -35,6 +36,12 @@ class Task(object):
         pic_dir = os.path.join(term_dir, self.config.pictures_dir)
         avatar_path = os.path.join(pic_dir, '{0}.{1}'.format(id, ext))
         return avatar_path
+
+    def exists(self, filename):
+        if not self.config.overwrite_existing and os.path.isfile(filename):
+            self.logger.info('file already exists: {0}'.format(filename))
+            return True
+        return False
 
 
 class TaskResult(enum.Enum):

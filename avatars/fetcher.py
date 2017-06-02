@@ -1,16 +1,14 @@
+import os.path
 import config
 import logging
-
 from task import TaskResult
 from folder_tree_builder import FolderTreeBuilder
 from avatar_searcher import AvatarSearcher
 from avatar_loader import AvatarLoader
 from fb_client import FacebookClient
 
-# todo
-# add better logging and error handling
-
-_logger = logging.getLogger(__name__)
+_script_name = os.path.splitext(os.path.basename(__file__))[0]
+_logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
 
 _client = FacebookClient(

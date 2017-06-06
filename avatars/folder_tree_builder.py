@@ -4,7 +4,6 @@ from task import Task, TaskResult
 
 
 class FolderTreeBuilder(Task):
-
     def routine(self):
         self._create_dir_safe(self.config.storage_path)
         for term in self.config.search_terms:

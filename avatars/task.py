@@ -2,13 +2,20 @@
 import os
 import os.path
 import enum
+from config import AppConfig
+from logging import Logger
+from di import inject
 
 
 class Task(object):
+    """Abstract base class for pipeline tasks"""
 
     default_map = {'s': 0, 'url': None}
 
-    def __init__(self, config, logger):
+    @inject
+    def __init__(self,
+                 config: AppConfig,
+                 logger: Logger):
         self.config = config
         self.logger = logger
 

@@ -2,6 +2,9 @@
 import json
 import http.client
 from urllib.parse import urlparse
+from config import AppConfig
+from logging import Logger
+from di import inject
 
 
 class FacebookClient(object):
@@ -9,9 +12,12 @@ class FacebookClient(object):
     version = '2.9'
     base_url = 'graph.facebook.com'
 
-    def __init__(self, logger, access_token):
+    @inject
+    def __init__(self,
+                 config: AppConfig,
+                 logger: Logger):
+        self.config = config
         self.logger = logger
-        self.access_token = access_token
 
     def search(self, term, offset, size):
         """
@@ -28,7 +34,7 @@ class FacebookClient(object):
         }
         """
         url = ('/v{0}/search?fields=id&type=user&q={1}&format=json&offset={2}&limit={3}&access_token={4}'
-               .format(self.version, term, offset, size, self.access_token))
+               .format(self.version, term, offset, size, self.config.access_token))
         self.logger.debug('search request - {0}'.format(url[:100]))
         conn = http.client.HTTPSConnection(self.base_url)
         conn.request('GET', url)
@@ -56,7 +62,7 @@ class FacebookClient(object):
         }
         """
         url = ('/v{0}/{1}?fields=id,picture.type(large)&access_token={2}'
-               .format(self.version, id, self.access_token))
+               .format(self.version, id, self.config.access_token))
         self.logger.debug('profile request - {0}'.format(url[:100]))
         conn = http.client.HTTPSConnection(self.base_url)
         conn.request('GET', url)

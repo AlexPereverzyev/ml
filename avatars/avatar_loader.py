@@ -1,14 +1,17 @@
 
 import json
 from task import Task, TaskResult
+from fb_client import FacebookClient
+from di import inject
 
 
 class AvatarLoader(Task):
 
     ext = 'jpg'
 
-    def __init__(self, config, logger, client):
-        super().__init__(config, logger)
+    @inject
+    def __init__(self, client: FacebookClient):
+        super().__init__()
         self.client = client
 
     def routine(self):

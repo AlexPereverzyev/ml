@@ -6,9 +6,6 @@ from di import inject
 
 
 class AvatarLoader(Task):
-
-    ext = 'jpg'
-
     @inject
     def __init__(self, client: FacebookClient):
         super().__init__()
@@ -35,13 +32,15 @@ class AvatarLoader(Task):
                         self.logger.exception('failed to fetch avatar for: {0}'
                                               .format(id))
                     else:
-                        avatar_file = self.path_for_avatar(term, id, self.ext)
+                        avatar_file = self.path_for_avatar(
+                            term, id, self.config.picture_format)
                         if avatar is not None and not self.exists(avatar_file):
                             with open(avatar_file, 'wb') as f:
                                 f.write(avatar)
                         else:
-                            self.logger.info('ignoring default avatar for {0}'
-                                             .format(id))
+                            self.logger.info(
+                                'ignoring default or existing avatar for {0}'
+                                .format(id))
                 with open(ids_map_file, 'w+') as f:
                     ids_map = json.dumps(ids_map, indent=4)
                     f.write(ids_map)

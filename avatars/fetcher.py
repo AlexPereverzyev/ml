@@ -4,6 +4,7 @@ import os.path
 import logging
 from task import TaskResult
 from folder_tree_builder import FolderTreeBuilder
+from avatar_converter import AvatarConverter
 from avatar_searcher import AvatarSearcher
 from avatar_loader import AvatarLoader
 
@@ -11,7 +12,10 @@ from avatar_loader import AvatarLoader
 _script_name = os.path.splitext(os.path.basename(__file__))[0]
 _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
-_pipeline = [FolderTreeBuilder(), AvatarSearcher(), AvatarLoader()]
+_pipeline = [FolderTreeBuilder(),
+             AvatarSearcher(),
+             AvatarLoader(),
+             AvatarConverter()]
 _logger.debug('running pipeline')
 
 for task in _pipeline:

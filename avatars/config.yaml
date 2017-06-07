@@ -14,9 +14,13 @@ storage-path: files
 
 out-file-templ: ids_map_{0}.json
 
-pictures_dir: pic
+pictures-dir: pic
 
-processed_pic_dir: pic_proc
+picture-format: jpg
+
+picture-size: [100, 100]
+
+processed-pic-dir: pic_proc
 
 overwrite-existing: False
 

@@ -48,7 +48,7 @@ class Task(object):
         return avatar_path
 
     def exists(self, filename):
-        if not self.config.overwrite_existing and os.path.isfile(filename):
+        if os.path.isfile(filename) and not self.config.overwrite_existing:
             self.logger.info('file already exists: {0}'.format(filename))
             return True
         return False

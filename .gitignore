@@ -2,6 +2,7 @@
 data
 test_data
 avatars/files
+*.7z
 
 # Mac OS
 .DS_Store

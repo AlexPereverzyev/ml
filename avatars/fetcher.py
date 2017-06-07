@@ -14,8 +14,8 @@ _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
 _pipeline = [FolderTreeBuilder(),
              AvatarSearcher(),
-             AvatarLoader(),
-             AvatarConverter()]
+             AvatarLoader()]
+             # AvatarConverter()]
 _logger.debug('running pipeline')
 
 for task in _pipeline:

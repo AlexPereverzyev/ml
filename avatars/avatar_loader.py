@@ -12,8 +12,11 @@ class AvatarLoader(Task):
         self.client = client
 
     def routine(self):
+        size = self.config.search_results.page_size
+        start = self.config.search_results.offset // size
         for term in self.config.search_terms:
-            for p in range(1, self.config.search_results.page_count + 1):
+            for p in range(start + 1,
+                           start + self.config.search_results.page_count + 1):
                 _, _, _, ids_map_file = self.paths_for(term, p)
                 with open(ids_map_file, 'r') as f:
                     ids_map = json.loads(f.read())

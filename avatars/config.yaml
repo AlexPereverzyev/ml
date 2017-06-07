@@ -7,7 +7,7 @@ search-terms:
 
 search-results:
   offset: 0
-  page-size: 2
+  page-size: 1
   page-count: 1
 
 storage-path: files
@@ -22,6 +22,6 @@ picture-size: [100, 100]
 
 processed-pic-dir: pic_proc
 
-overwrite-existing: False
+overwrite-existing: True
 
-access-token: EAACEdEose0cBAKBptDNh2AMV7A0pHtYLDP9UCZBIZCnbyklephYPL6kXBJmhjpojqVyg9XMdXs8umWRUzNF3XlMGPMH6dYssXkk4DoUpF5uvWe0jhXoE0Qk8tmzQbkRmcYd5YZB7vlxSO7tpYgiQAOLq0QIOtTZBFET8ArTgfZCXP50coBcrSBDrGv9kaVd0ZD
+access-token: EAACEdEose0cBAN6UPXtSZBBhLtZCGNLHUzEoP0i2MS8sZAHQ9Luc8FZA2AhKnc2FuoijRL3m9YLDtXxF7ZBUqtPZAJULw2YLVzwPk4r50gg4aoQKMMtWiZAGcKZB3Swl8PAL0l6gXCX5hShusybLhcGdDuWFBo3N7p5MZACkJEdYuZAaSD2URmStn1QhM0oIIQ5ZBEZD

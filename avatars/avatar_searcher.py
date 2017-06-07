@@ -29,6 +29,10 @@ class AvatarSearcher(Task):
                         'user search failed: \'{0}\', page {1}'
                         .format(term, p))
                 else:
+                    if not ids:
+                        self.logger.info('nothing found for: \'{0}\', page {1}'
+                                         .format(term, p))
+                        break
                     ids_map = {id: self.default_map for id in ids}
                     ids_map = json.dumps(ids_map, indent=4)
                     with open(ids_map_file, 'w+') as f:

@@ -43,10 +43,12 @@ class FacebookClient(object):
             conn.close()
             raise Exception('search failed: {0} - {1}'
                             .format(resp.status, resp.reason))
-        resp_data = resp.read()
+        resp_data = resp.read().decode('utf-8')
         conn.close()
         resp_parsed = json.loads(resp_data)
-        ids = [d['id'] for d in resp_parsed['data']]
+        ids = None
+        if resp_parsed['data']:
+            ids = [d['id'] for d in resp_parsed['data']]
         return ids
 
     def avatar(self, id):
@@ -71,7 +73,7 @@ class FacebookClient(object):
             conn.close()
             raise Exception('get profile failed: {0} - {1}'
                             .format(resp.status, resp.reason))
-        resp_data = resp.read()
+        resp_data = resp.read().decode('utf-8')
         conn.close()
         resp_parsed = json.loads(resp_data)
         url = resp_parsed['picture']['data']['url']

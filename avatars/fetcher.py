@@ -12,10 +12,12 @@ from avatar_loader import AvatarLoader
 _script_name = os.path.splitext(os.path.basename(__file__))[0]
 _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
-_pipeline = [FolderTreeBuilder(),
-             AvatarSearcher(),
-             AvatarLoader()]
-             # AvatarConverter()]
+_pipeline = [
+    FolderTreeBuilder(),
+    AvatarSearcher(),
+    AvatarLoader(),
+    AvatarConverter()
+]
 _logger.debug('running pipeline')
 
 for task in _pipeline:

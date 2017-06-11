@@ -2,7 +2,9 @@
 data
 test_data
 avatars/files
+faces/models
 *.7z
+*.pkl
 
 # Mac OS
 .DS_Store

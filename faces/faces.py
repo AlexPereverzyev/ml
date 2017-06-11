@@ -1,4 +1,5 @@
 import os
+import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,16 +10,14 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA
 from sklearn.svm import OneClassSVM
 from sklearn.metrics import accuracy_score
+from sklearn.externals import joblib
 
 
 def score(estimator, x):
     return accuracy_score(np.ones(len(x)), estimator.predict(x))
 
-# todo:
-# 1. add model persistance
-# 2. breakdown the script into modules
 
-
+models_path = 'models'
 data_path = 'data'
 data = {}
 
@@ -49,6 +48,11 @@ print('Best Estimator:')
 print(clf.best_estimator_)
 print('Train Score: ', score(clf, X_train))
 print('Test  Score: ', score(clf, X_test))
+
+timestamp = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+model_name = os.path.join(models_path, 'fdm_{0}.pkl'.format(timestamp))
+joblib.dump(clf.best_estimator_, model_name)
+print('Model saved to: ', model_name)
 
 
 # def plot_gallery(images, titles, h, w, n_row=3, n_col=4):

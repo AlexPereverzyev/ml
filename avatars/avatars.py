@@ -13,9 +13,9 @@ _script_name = os.path.splitext(os.path.basename(__file__))[0]
 _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
 _pipeline = [
-    FolderTreeBuilder(),
-    AvatarSearcher(),
-    AvatarLoader(),
+    # FolderTreeBuilder(),
+    # AvatarSearcher(),
+    # AvatarLoader(),
     AvatarConverter()
 ]
 _logger.debug('running pipeline')

@@ -1,7 +1,7 @@
 
 
 from metrics import *
-from graphs import plot
+from graphs import *
 from construction import *
 from data import DataLoader
 from learning import HypoSearcher
@@ -13,25 +13,29 @@ data_path = 'data'
 ext, h, w = '.jpg', 70, 70
 param_grid = [{'pca__n_components': [40, 50, 80],
                'svc__kernel': ['rbf'],
-               'svc__C': [1, 10, 100],
+               'svc__C': [1, 2, 3, 5, 10],
                'svc__tol': [0.00005, 0.0001, 0.001, 0.01],
-               'svc__gamma': [0.0001, 0.0005, 0.001, 0.005, 0.01]}]
+               'svc__gamma': [0.001, 0.005, 0.01]}]
 
-data_loader = DataLoader(data_path, ext)
-data_loader.mask = 'nm'
-model_store = ModelStore(models_path)
 searcher = HypoSearcher(create_image_classifier())
+store = ModelStore(models_path)
+samples = DataLoader(data_path, ext)
+samples.mask = 'b'
 
-X, Y, X_train, Y_train, X_test, Y_test = data_loader.load().split()
+X, Y, _, _, _, _ = samples.load().split()
 
-# clf = searcher.optimize(X_train, Y_train, param_grid)
-# model_store.save(clf)
-model_name = 'pca_svc_n40_c10.pkl'
-clf = model_store.load(model_name)
-
+# clf = searcher.optimize(X, Y, param_grid)
+# store.save(clf)
 # print_model(clf, 'Best estimator:')
-# plot(eigenfaces_from_classifier(clf, h, w))
 
-print_model(clf, model_name)
-print_scores(clf, X_train, Y_train, X_test, Y_test)
-print_mismatches(clf, data_loader.data, X, Y, ext)
+# plot(eigenfaces_from_classifier(clf, h, w))
+# plot_lcurve(clf, X, Y)
+# plot_vcurve(clf, X, Y, 'pca__n_components', [25, 40, 50, 80, 100])
+
+model_name = 'pca_svc_20170617-211110.pkl'
+clf = store.load(model_name)
+
+# print_model(clf, model_name)
+print_score(clf, X, Y)
+print_mismatches(clf, samples.data, X, Y, ext)
+# priny_confusion(clf, X, Y)

@@ -1,5 +1,7 @@
 
+import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.model_selection import validation_curve, learning_curve
 
 
 def plot(images, n_row=3, n_col=4):
@@ -11,4 +13,28 @@ def plot(images, n_row=3, n_col=4):
         plt.imshow(images[i].reshape((h, w)), cmap=plt.cm.gray)
         plt.xticks(())
         plt.yticks(())
+    plt.show()
+
+
+def plot_vcurve(clf, x, y, param, values):
+    nvalues = np.array(values)
+    train_scores, test_scores = validation_curve(clf, x, y, param, nvalues)
+    plt.title('Validation Curve for \'{0}\': {1}'
+              .format(param, ', '.join([str(v) for v in values])))
+    plt.plot(nvalues, train_scores, '-r', linewidth=1, label='Train')
+    plt.plot(nvalues, test_scores, '-b', linewidth=1, label='Test')
+    plt.legend()
+    plt.show()
+
+
+def plot_lcurve(clf, x, y):
+    train_sizes, train_scores, test_scores = learning_curve(clf, x, y)
+    print(train_sizes)
+    print(train_scores)
+    print(test_scores)
+    plt.title('Learning Curve with {0} samples'
+              .format(', '.join([str(s) for s in train_sizes])))
+    plt.plot(train_sizes, train_scores, '-r', linewidth=1, label='Train')
+    plt.plot(train_sizes, test_scores, '-b', linewidth=1, label='Test')
+    plt.legend()
     plt.show()

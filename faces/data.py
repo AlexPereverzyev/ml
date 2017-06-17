@@ -29,8 +29,9 @@ class DataLoader(object):
         for k, v in self.data.items():
             X.append(v.ravel())
             Y.append(int('n' not in k))
+        X, Y = np.array(X), np.array(Y)
         X_train, X_test, Y_train, Y_test = train_test_split(
-            np.array(X), np.array(Y), test_size=0.25, random_state=self.state)
+            X, Y, test_size=0.25, random_state=self.state)
         if print_stats:
             print('Samples   : ', len(X))
             print('Features  : ', len(X[0]))

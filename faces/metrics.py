@@ -1,4 +1,7 @@
 
+from sklearn.metrics import confusion_matrix
+
+
 def print_score(clf, x, y, label='Score: '):
     print(label, clf.score(x, y))
 
@@ -22,3 +25,9 @@ def print_mismatches(clf, data, x, y, ext):
     print('Mismatches:')
     for m in mismatches:
         print(m)
+
+
+def priny_confusion(clf, x, y):
+    confusion = confusion_matrix(y, clf.predict(x))
+    print('Confusion Matrix:')
+    print(confusion)

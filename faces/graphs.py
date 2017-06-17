@@ -29,9 +29,6 @@ def plot_vcurve(clf, x, y, param, values):
 
 def plot_lcurve(clf, x, y):
     train_sizes, train_scores, test_scores = learning_curve(clf, x, y)
-    print(train_sizes)
-    print(train_scores)
-    print(test_scores)
     plt.title('Learning Curve with {0} samples'
               .format(', '.join([str(s) for s in train_sizes])))
     plt.plot(train_sizes, train_scores, '-r', linewidth=1, label='Train')

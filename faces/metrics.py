@@ -27,7 +27,7 @@ def print_mismatches(clf, data, x, y, ext):
         print(m)
 
 
-def priny_confusion(clf, x, y):
+def print_confusion(clf, x, y):
     confusion = confusion_matrix(y, clf.predict(x))
     print('Confusion Matrix:')
     print(confusion)

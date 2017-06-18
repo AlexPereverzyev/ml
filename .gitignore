@@ -1,9 +1,11 @@
 # data folders
 data
-temp
 test_data
 avatars/files
 faces/models
+faces/data
+faces/targets
+faces/temp
 *.7z
 *.pkl
 *.png

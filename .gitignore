@@ -1,10 +1,13 @@
 # data folders
 data
+temp
 test_data
 avatars/files
 faces/models
 *.7z
 *.pkl
+*.png
+*.jpg
 
 # Mac OS
 .DS_Store

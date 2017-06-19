@@ -19,9 +19,8 @@ class DataLoader(object):
                      if f.endswith(self.ext) and
                      (self.mask is None or
                       all(m not in f for m in self.mask))):
-            key = os.path.splitext(face)[0]
             img = Image.open(os.path.join(self.data_path, face))
-            self.data[key] = np.array(img)
+            self.data[face] = np.array(img)
         return self
 
     def split(self, print_stats=True):

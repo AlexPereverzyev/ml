@@ -37,7 +37,7 @@ def sqr_bounds(size, max_size, step):
         t, b = t + step, b + step
 
 
-def decompose(image_path, size=(70, 70), min_size=(50, 50),
+def decompose(image_path, size=(70, 70), min_size=(70, 70),
               scale_step=0.1, step=20):
     img = Image.open(image_path).convert('L')
     scale_min, scale_max = scale_range(size, min_size, img.size)

@@ -16,11 +16,12 @@ def print_model(clf, label):
     print(clf.get_params(deep=False))
 
 
-def print_mismatches(clf, data, x, y, ext):
+def print_mismatches(clf, data, x, y):
     Y = clf.predict(x)
     P = clf.predict_proba(x)
-    mismatches = ['{0:.2f}:{1:.2f} - {2}{3}'.format(*c_p, f, ext)
-                  for f, y_r, y_p, c_p in zip(data.keys(), Y, y, P)
+    F = [_map_to_file(data, s) for s in x]
+    mismatches = ['{0:.2f}:{1:.2f} - {2}'.format(*c_p, f)
+                  for f, y_r, y_p, c_p in zip(F, Y, y, P)
                   if y_r != y_p]
     print('Mismatches:')
     for m in mismatches:
@@ -31,3 +32,12 @@ def print_confusion(clf, x, y):
     confusion = confusion_matrix(y, clf.predict(x))
     print('Confusion Matrix:')
     print(confusion)
+
+
+def _map_to_file(data, x):
+    for k, v in data.items():
+        for s1, s2 in zip(v.ravel(), x):
+            if s1 != s2:
+                break
+        else:
+            return k

@@ -12,17 +12,17 @@ ext, h, w = '.jpg', 70, 70
 
 store = ModelStore(models_path)
 samples = DataLoader(data_path, ext)
-# samples.mask = 'a'
+samples.mask = 'b'
 
-X, Y, _, _, _, _ = samples.load().split()
+X, Y, _, _, X_test, Y_test = samples.load().split()
 
-model_name = 'pca_svc_20170618-221125.pkl'
+model_name = 'pca_svc_20170619-124909.pkl'
 clf = store.load(model_name)
 
 print_model(clf, model_name)
-print_score(clf, X, Y)
-print_mismatches(clf, samples.data, X, Y, ext)
-print_confusion(clf, X, Y)
+print_score(clf, X_test, Y_test)
+print_confusion(clf, X_test, Y_test)
+print_mismatches(clf, samples.data, X_test, Y_test)
 
 plot(eigenfaces_from_classifier(clf, h, w))
 # plot_lcurve(clf, X, Y)

@@ -37,3 +37,16 @@ class DataLoader(object):
             print('Train Set : ', len(X_train))
             print('Test Set  : ', len(X_test))
         return X, Y, X_train, Y_train, X_test, Y_test
+
+
+def recursive_listdir(source, destination, ext='jpg'):
+    for item in os.listdir(source):
+        item_name = item.lower()
+        item_path = os.path.join(source, item)
+        if os.path.isdir(item_path) and '.' not in item:
+            yield from recursive_listdir(item_path, destination)
+        elif os.path.isfile(item_path) and item.endswith(ext):
+            dest_path = os.path.join(
+                destination, '{0}.{1}'.format(
+                    os.path.splitext(item_name)[0], ext))
+            yield item_path, dest_path

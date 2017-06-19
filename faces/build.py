@@ -7,7 +7,7 @@ from persistence import ModelStore
 
 
 models_path = 'models'
-data_path = 'data'
+data_path = 'data2'
 ext, h, w = '.jpg', 70, 70
 param_grid = [{'pca__n_components': [40, 50, 60, 80],
                'svc__kernel': ['rbf'],

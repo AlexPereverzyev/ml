@@ -1,9 +1,9 @@
-# data folders
+# data folders and archives
 data
 test_data
 avatars/files
-faces/archive
 faces/data
+faces/snapshots
 faces/models
 faces/targets
 faces/matches

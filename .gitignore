@@ -2,10 +2,11 @@
 data
 test_data
 avatars/files
-faces/models
+faces/archive
 faces/data
+faces/models
 faces/targets
-faces/temp
+faces/matches
 *.7z
 *.pkl
 *.png

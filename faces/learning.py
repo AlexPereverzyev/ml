@@ -7,6 +7,6 @@ class HypoSearcher(object):
         self.clf = clf
 
     def optimize(self, x, y, params):
-        clf_search = GridSearchCV(self.clf, params).fit(x, y)
+        clf_search = GridSearchCV(self.clf, params, verbose=100).fit(x, y)
         clf = clf_search.best_estimator_
         return clf

@@ -1,6 +1,8 @@
 
 from PIL import Image
 
+max_size = 2000
+
 
 def scale_range(size, min_size, img_size):
     scale_min = max(size[0] / img_size[0], size[1] / img_size[1])
@@ -12,6 +14,14 @@ def rescale(size, scale):
     s_w = int(round(scale * size[0], 0))
     s_h = int(round(scale * size[1], 0))
     return (s_w, s_h)
+
+
+def prescale(size):
+    img_size = max(size)
+    if img_size > max_size:
+        scale = max_size / img_size
+        return rescale(size, scale)
+    return size
 
 
 def bound_range(lower, upper, step):
@@ -39,7 +49,9 @@ def sqr_bounds(size, max_size, step):
 
 def decompose(image_path, size=(70, 70), min_size=(70, 70),
               scale_step=0.1, step=20):
-    img = Image.open(image_path).convert('L')
+    img = Image.open(image_path)
+    img = img.resize(prescale(img.size))
+    img = img.convert('L')
     scale_min, scale_max = scale_range(size, min_size, img.size)
     for scale in bound_range(scale_min, scale_max, scale_step):
         scaled_size = rescale(img.size, scale)

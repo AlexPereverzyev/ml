@@ -6,7 +6,7 @@ from persistence import ModelStore
 from construction import eigenfaces_from_classifier
 
 
-model_name = 'pca_svc_0.pkl'
+model_name = 'pca_svc_1.pkl'
 data_path = 'data'
 models_path = 'models'
 ext, h, w = '.jpg', 70, 70
@@ -22,6 +22,6 @@ print_score(clf, X_test, Y_test)
 print_confusion(clf, X, Y)
 # print_mismatches(clf, samples.data, X_test, Y_test)
 
-plot(eigenfaces_from_classifier(clf, h, w))
+# plot(eigenfaces_from_classifier(clf, h, w))
 # plot_lcurve(clf, X_test, Y_test)
 # plot_vcurve(clf, X, Y, 'pca__n_components', range(20, 200, 5))

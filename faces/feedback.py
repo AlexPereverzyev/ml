@@ -5,9 +5,9 @@ from shutil import copyfile, move
 from data import recursive_listdir
 
 
-negative = '/Users/sasha/Documents/Python/ml/faces/matches'
-positive = '/Users/sasha/Documents/Python/ml/faces/positive'
-train_data = '/Users/sasha/Documents/Python/ml/faces/data'
+negative = 'matches'
+positive = 'positive'
+train_data = 'data'
 
 # add negative matches to training data set
 for i, (s, d) in enumerate(recursive_listdir(negative, train_data)):
@@ -16,13 +16,13 @@ for i, (s, d) in enumerate(recursive_listdir(negative, train_data)):
 print('processed count:', i)
 
 # add positive matches to training data set
-start, count = 0, i + 1
-for i, (s, d) in enumerate(recursive_listdir(positive, train_data)):
-    file_idx = int(os.path.basename(s).split('.')[0])
-    if start <= file_idx <= (start + count):
-        print(s, '->', d)
-        copyfile(s, d)
-print('processed count:', i)
+# start, count = 0, 1000
+# for i, (s, d) in enumerate(recursive_listdir(positive, train_data)):
+#     file_idx = int(os.path.basename(s).split('.')[0])
+#     if start <= file_idx <= (start + count):
+#         print(s, '->', d)
+#         copyfile(s, d)
+# print('processed count:', i)
 
 # crop and convert images
 # pic_dir = '/Users/sasha/scikit_learn_data/lfw_home/lfw_funneled'

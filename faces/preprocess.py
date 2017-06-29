@@ -4,15 +4,29 @@ from PIL import Image
 max_size = 2000
 
 
+def scale_int(value, scale):
+    return int(round(scale * value, 0))
+
+
 def scale_range(size, min_size, img_size):
     scale_min = max(size[0] / img_size[0], size[1] / img_size[1])
     scale_max = max(size[0] / min_size[0], size[1] / min_size[1])
     return scale_min, scale_max
 
 
+def scale_bounds(bounds, scale):
+    l, t, r, b = bounds
+    l = scale_int(l, scale)
+    t = scale_int(t, scale)
+    r = scale_int(r, scale)
+    b = scale_int(b, scale)
+    return (l, t, r, b)
+
+
 def rescale(size, scale):
-    s_w = int(round(scale * size[0], 0))
-    s_h = int(round(scale * size[1], 0))
+    w, h = size
+    s_w = scale_int(w, scale)
+    s_h = scale_int(h, scale)
     return (s_w, s_h)
 
 
@@ -20,8 +34,8 @@ def prescale(size):
     img_size = max(size)
     if img_size > max_size:
         scale = max_size / img_size
-        return rescale(size, scale)
-    return size
+        return scale
+    return 1.
 
 
 def bound_range(lower, upper, step):
@@ -36,7 +50,7 @@ def bound_range(lower, upper, step):
     yield upper
 
 
-def sqr_bounds(size, max_size, step):
+def square_bounds(size, max_size, step):
     m_w, m_h, w, h = *max_size, *size
     l, t, r, b = 0, 0, w, h
     while b <= m_h:
@@ -47,15 +61,10 @@ def sqr_bounds(size, max_size, step):
         t, b = t + step, b + step
 
 
-def decompose(image_path, size=(70, 70), min_size=(70, 70),
+def decompose(img_size, size=(70, 70), min_size=(70, 70),
               scale_step=0.1, step=20):
-    img = Image.open(image_path)
-    img = img.resize(prescale(img.size))
-    img = img.convert('L')
-    scale_min, scale_max = scale_range(size, min_size, img.size)
+    scale_min, scale_max = scale_range(size, min_size, img_size)
     for scale in bound_range(scale_min, scale_max, scale_step):
-        scaled_size = rescale(img.size, scale)
-        scaled_img = img.resize(scaled_size)
-        for bounds in sqr_bounds(size, scaled_img.size, step):
-            region = scaled_img.crop(bounds)
-            yield region, scale, bounds
+        scaled_size = rescale(img_size, scale)
+        for bounds in square_bounds(size, scaled_size, step):
+            yield scale, bounds

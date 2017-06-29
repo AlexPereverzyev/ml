@@ -6,7 +6,7 @@ from persistence import ModelStore
 from construction import eigenfaces_from_classifier
 
 
-model_name = 'pca_svc_1.pkl'
+model_name = 'pca_svc_2.pkl'
 data_path = 'data'
 models_path = 'models'
 ext, h, w = '.jpg', 70, 70

@@ -12,7 +12,7 @@ ext, h, w = '.jpg', 70, 70
 param_grid = [{'pca__n_components': [50, 80, 100, 150],
                'svc__kernel': ['rbf'],
                'svc__C': [2, 3, 5, 7, 10],
-               'svc__gamma': [0.005, 0.01, 0.015]}]
+               'svc__gamma': [0.005, 0.008, 0.01, 0.015]}]
 
 searcher = HypoSearcher(create_image_classifier())
 store = ModelStore(models_path)

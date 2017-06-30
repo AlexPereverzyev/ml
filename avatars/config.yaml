@@ -2,16 +2,7 @@
 logging-config-path: logging.yaml
 
 search-terms:
-  - negative
-  # - kate
-  # - jack
-  # - sofia
-  # - david
-  # - lucy
-  # - mike
-  # - nina
-  # - joseph
-  # - tom
+  - alex
 
 search-results:
   offset: 100

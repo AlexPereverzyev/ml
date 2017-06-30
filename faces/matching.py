@@ -22,8 +22,14 @@ class MatchDetector(object):
         img_size = rescale(image.size, pre_scale)
         img = image.resize(img_size)
         img = img.convert('L')
+        scale = .0
         for i, (s, b) in enumerate(decompose(img_size, step=15)):
-            region = img.resize(rescale(img_size, s)).crop(b)
-            is_face, confidence = self.match(region)
+            if scale != s:
+                scale = s
+                size_scaled = rescale(img_size, scale)
+                img_scaled = img.resize(size_scaled)
+            frame = img_scaled.crop(b)
+            is_face, confidence = self.match(frame)
             if is_face:
-                yield confidence, scale_bounds(b, 1 / (pre_scale * s)), region
+                rect = scale_bounds(b, 1 / (pre_scale * s))
+                yield confidence, rect, frame

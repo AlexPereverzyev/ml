@@ -5,7 +5,7 @@ search-terms:
   - alex
 
 search-results:
-  offset: 100
+  offset: 0
   page-size: 10
   page-count: 1
 
@@ -23,4 +23,6 @@ processed-pic-dir: pic_proc
 
 overwrite-existing: False
 
-access-token: EAACEdEose0cBANuFzGf1q0tfptpaMCmmNtrxOZAJGrqD6MBBoums7dMcpkqZB0R2qGZCny6eBX6QTgAVOyLLyFcQMH6A7ZBq1iUokayCfZB3tQfpQE2vC5rn4tkClCgpwJN1PQ8lOG1xECnG3mUkNgYNl47PVfpvZAx8nBMi5ChP8CCyB5agrPZAvIGadU3rsoZD
+access-token: EAACEdEose0cBAOaS8fixjKzK70lO9J1o8akZAnSZBSsSW0ZAlmZABShX9g7X29n8O6ZAaUV1OmZCwo3iriuN5iLe8KjnkyV0k7ANp4hZBf9iXd3rJnjalnZCJga8aOSPXApf4uMTqz4G1AsWgW7uOzZAZBZBkoQ1I4ZBsrrYJSOFn7mw5PI9J2waijyaV2Tp4ieZCxImzLgaDOzuv2wZDZD
+
+model-path: ../faces/models/pca_svc_2.pkl

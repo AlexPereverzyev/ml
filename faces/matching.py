@@ -3,7 +3,7 @@ import numpy as np
 from preprocess import *
 
 
-class MatchDetector(object):
+class FaceDetector(object):
 
     threshold = 0.85
 
@@ -23,7 +23,7 @@ class MatchDetector(object):
         img = image.resize(img_size)
         img = img.convert('L')
         scale = .0
-        for i, (s, b) in enumerate(decompose(img_size, step=15)):
+        for s, b in decompose(img_size, step=15):
             if scale != s:
                 scale = s
                 size_scaled = rescale(img_size, scale)

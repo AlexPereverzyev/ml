@@ -1,7 +1,7 @@
 
 import os
 from PIL import Image
-from matching import MatchDetector
+from matching import FaceDetector
 from persistence import ModelStore
 from data import recursive_listdir
 
@@ -14,7 +14,7 @@ matches_path = 'matches'
 
 store = ModelStore(models_path)
 clf = store.load(model_name)
-detector = MatchDetector(clf)
+detector = FaceDetector(clf)
 
 for img_path, _ in recursive_listdir(targets_path, ''):
     img_name = os.path.splitext(os.path.basename(img_path))[0]

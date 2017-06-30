@@ -13,8 +13,8 @@ _logger = logging.getLogger(_script_name)
 _logger.debug('initializing pipeline')
 _pipeline = [
     FolderTreeBuilder(),
-    # AvatarSearcher(),
-    # AvatarLoader(),
+    AvatarSearcher(),
+    AvatarLoader(),
     AvatarConverter()
 ]
 _logger.debug('running pipeline')

@@ -6,6 +6,7 @@ from preprocess import *
 from config import AppConfig
 from logging import Logger
 from sklearn.externals import joblib
+from collections import OrderedDict
 
 
 class FaceDetector(object):
@@ -54,10 +55,17 @@ class FaceDetector(object):
                 yield confidence, rect, frame
 
     def find_unique(self, image):
-        # todo: check for overlaps instead
-        best = (0, None)
+        matches = OrderedDict()
         for c, r, _ in self.find_all(image):
-            if c > best[0]:
-                best = (c, r)
-        if best[0]:
-            yield best
+            better = True
+            for rr, cc in matches.items():
+                if bounds_overlap(r, rr):
+                    if c > cc:
+                        del matches[rr]
+                    else:
+                        better = False
+                    break
+            if better:
+                matches[r] = c
+        for r, c in matches.items():
+            yield c, r

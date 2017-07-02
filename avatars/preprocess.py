@@ -68,3 +68,11 @@ def decompose(img_size, size=(70, 70), min_size=(70, 70),
         scaled_size = rescale(img_size, scale)
         for bounds in square_bounds(size, scaled_size, step):
             yield scale, bounds
+
+
+def bounds_overlap(b1, b2):
+    x_o = (b1[0] >= b2[0] and b1[0] <= b2[2] or
+           b2[0] >= b1[0] and b2[0] <= b1[2])
+    y_o = (b1[1] >= b2[1] and b1[1] <= b2[3] or
+           b2[1] >= b1[1] and b2[1] <= b1[3])
+    return x_o and y_o

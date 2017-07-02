@@ -22,24 +22,22 @@ class AvatarConverter(Task):
                            if self._is_image(f)):
                 avatar_file = os.path.join(pic_dir, avatar)
                 proc_avatar_file = os.path.join(
-                    pic_proc_dir,
-                    '{0}.{1}'.format(os.path.splitext(avatar)[0],
-                                     self.config.picture_format))
+                    pic_proc_dir, os.path.splitext(avatar)[0])
                 if self.exists(proc_avatar_file):
                     continue
                 self.logger.info('processing avatar: {0}'.format(avatar_file))
-                if self._process_avatar(avatar_file, proc_avatar_file):
-                    self.logger.info('saved face(s) to: {0}'
-                                     .format(proc_avatar_file))
+                self._process_avatar(avatar_file, proc_avatar_file)
         return TaskResult.OK
 
     def _process_avatar(self, source, destination):
-        img, r = Image.open(source), False
-        for c, b in self.detector.find_unique(img):
-            match, r = img.crop(b), True
-            match.save(destination)
+        img = Image.open(source)
+        for i, (c, b) in enumerate(self.detector.find_unique(img)):
+            match = img.crop(b)
+            match_name = '{0}-{1}.{2}'.format(
+                destination, i + 1, self.config.picture_format)
+            match.save(match_name)
             self.logger.info('found match: {0:.2f}, {1}'.format(c, b))
-        return r
+            self.logger.info('face saved to: {0}'.format(match_name))
 
     def _is_image(self, filename):
         return any(filename.lower().endswith('.' + f)

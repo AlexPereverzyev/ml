@@ -2,9 +2,9 @@
 Fetching User Avatars
 =====================
 
-This is a tool for loading user avatars from Facebook. It consists of a several tasks
-which can be run sequentially, independently or re-run multiple times without overwriting 
-previous results. The tool comes with YAML configuration file.
+This is tool for loading user avatars from Facebook and extracting faces from
+them using frontal face detection. It consists of a several tasks which can be run sequentially, independently or re-run multiple times without
+overwriting previous results. The tool comes with YAML configuration file.
 
 
 Short Facebook API Reference

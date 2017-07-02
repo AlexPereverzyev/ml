@@ -7,6 +7,12 @@ Machine Learning scratches and prototypes. The goal and purpose of the project
 is to understand fundamental learning algorithms and try to reproduce them
 from scratch and compare with well-known 3rd-party libraries.
 
+Besides, there are two more practical examples included:
+
+- *faces*: iterative training of SVM classifier for frontal face detection
+- *avatars*: tool for fetching avatars from Facebook and extracting faces
+  from them using model from example above
+
 In the implementation I've tried to code as much as I could manually
 (including matrix operations or their equivalents), but left heavy-lifting
 (matrix inverse, eigenvalues problem) to *numpy* and *scipy*. There is also no
